@@ -43,6 +43,8 @@ router.post('/', validateLogin, async (req, res, next) => {
 
     const safeUser = {
         id: user.id,
+        firstName: user.firstName,
+        lastName: user.lastName,
         email: user.email,
         username: user.username,
     };
@@ -54,11 +56,6 @@ router.post('/', validateLogin, async (req, res, next) => {
     })
 })
 
-//Log out
-router.delete('/', (_req, res) => {
-    res.clearCookie('token');
-    return res.json({ message: 'success' });
-});
 
 // Restore session user
 router.get('/', (req, res) => {
@@ -66,6 +63,8 @@ router.get('/', (req, res) => {
     if(user) {
         const safeUser = {
             id: user.id,
+            firstName: user.firstName,
+            lastName: user.lastName,
             email: user.email,
             username: user.username,
         };
@@ -75,5 +74,10 @@ router.get('/', (req, res) => {
     } else return res.json({ user:null });
 });
 
+//Log out
+router.delete('/', (_req, res) => {
+    res.clearCookie('token');
+    return res.json({ message: 'success' });
+});
 
 module.exports = router;
