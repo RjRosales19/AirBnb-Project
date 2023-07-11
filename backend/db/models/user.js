@@ -11,6 +11,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+<<<<<<< HEAD
       User.hasMany(
         models.Spot,
         {
@@ -19,6 +20,9 @@ module.exports = (sequelize, DataTypes) => {
         onDelete: 'CASCADE'
       }
       )
+=======
+      User.hasMany(models.Review)
+>>>>>>> review
     }
   }
   User.init({
