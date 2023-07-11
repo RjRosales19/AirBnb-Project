@@ -18,7 +18,7 @@ module.exports = (sequelize, DataTypes) => {
         hooks: true,
         onDelete: 'CASCADE'
       })
-      
+
       User.hasMany(
         models.Review,
         {
