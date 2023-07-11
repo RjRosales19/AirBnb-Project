@@ -14,15 +14,24 @@ module.exports = (sequelize, DataTypes) => {
       User.hasMany(
         models.Spot,
         {
-        foreignKey: "ownerId",
+        foreignKey: 'ownerId',
         hooks: true,
         onDelete: 'CASCADE'
-      }
-      )
-      User.hasMany(models.Review)
-      User.hasMany(models.Booking)
+      })
+      
+      User.hasMany(
+        models.Review,
+        {
+          foreignKey: 'userId'
+        })
+      User.hasMany(
+        models.Booking,
+        {
+          foreignKey: 'userId'
+        })
     }
   }
+
   User.init({
     username: {
       type: DataTypes.STRING,
