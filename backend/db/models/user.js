@@ -20,6 +20,7 @@ module.exports = (sequelize, DataTypes) => {
       }
       )
       User.hasMany(models.Review)
+      User.hasMany(models.Booking)
     }
   }
   User.init({
