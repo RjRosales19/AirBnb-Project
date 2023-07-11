@@ -18,7 +18,7 @@ module.exports = {
      *   isBetaMember: false
      * }], {});
     */
-    await ReviewImage.bulkCreate([
+    await SpotImage.bulkCreate([
       {
         spotId: 1,
         url: 1,

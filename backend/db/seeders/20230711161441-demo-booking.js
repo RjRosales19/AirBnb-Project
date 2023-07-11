@@ -17,24 +17,24 @@ module.exports = {
      *   isBetaMember: false
      * }], {});
     */
-    await ReviewImage.bulkCreate([
+    await Booking.bulkCreate([
       {
         spotId: 1,
         userId: 1,
-        startDate: true,
-        endDate:
+        startDate: '2010-02-20',
+        endDate:'2010-02-30'
       },
       {
         spotId: 1,
         userId: 1,
         startDate: '2010-01-20',
-        endDate:
+        endDate:'2010-01-25'
       },
       {
         spotId: 1,
         userId: 1,
-        startDate: '2010-01-20',
-        endDate: ''
+        startDate: '2010-05-20',
+        endDate: '2013-05-23'
       }
     ], {validate: true});
   },
@@ -46,7 +46,7 @@ module.exports = {
      * Example:
      * await queryInterface.bulkDelete('People', null, {});
      */
-    options.tableName = 'SpotImages';
+    options.tableName = 'Bookings';
     const Op = Sequelize.Op;
     return queryInterface.bulkDelete(options, {
       spotId: { [Op.in]: [1, 2, 3]}
