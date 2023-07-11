@@ -21,17 +21,17 @@ module.exports = {
     await SpotImage.bulkCreate([
       {
         spotId: 1,
-        url: 1,
+        url: 'https://images.pexels.com/photos/106399/pexels-photo-106399.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
         preview: true,
       },
       {
         spotId: 2,
-        url: 1,
+        url: "https://media.istockphoto.com/id/1026205392/photo/beautiful-luxury-home-exterior-at-twilight.jpg?s=612x612&w=0&k=20&c=HOCqYY0noIVxnp5uQf1MJJEVpsH_d4WtVQ6-OwVoeDo=",
         preview: true,
       },
       {
         spotId: 3,
-        url: 1,
+        url: "https://www.shutterstock.com/shutterstock/photos/1514333600/display_1500/stock-photo-houses-in-suburb-at-summer-in-the-north-america-luxury-houses-with-nice-landscape-1514333600.jpg",
         preview: true,
       }
     ], {validate: true});

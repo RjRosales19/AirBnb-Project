@@ -47,4 +47,12 @@ router.post('/', requireAuth, async(req,res,next) => {
     })
     res.json(newSpot)
 })
+
+router.post('/:id/images', requireAuth, async(req,res,next) => {
+    const spotId = req.spot.id
+    const spotImage = await SpotImage.create({
+        spotId
+    })
+    res.json(spotImage)
+})
 module.exports = router;
