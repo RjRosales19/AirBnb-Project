@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       Booking.belongsToMany(models.Spot);
-      Booking.belongsToMany(models.User)
+      Booking.belongsToMany(models.User);
     }
   }
   Booking.init({
