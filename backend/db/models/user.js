@@ -29,6 +29,8 @@ module.exports = (sequelize, DataTypes) => {
         models.Spot,
         {
           foreignKey: 'ownerId',
+          hooks:true,
+          onDelete: 'CASCADE'
         }
       )
     }

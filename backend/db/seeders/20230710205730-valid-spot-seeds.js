@@ -59,7 +59,21 @@ module.exports = {
       price: 20,
       avgRating: 4.5,
       previewImage: 'image url',
-    }
+    },
+    // {
+    //   ownerId:4,
+    //   address: '132 Green Road',
+    //   city:'Boston',
+    //   state:'Vermont',
+    //   country:'United States of America',
+    //   lat: 32.6183191,
+    //   lng: -100.1123134,
+    //   name: 'Eternal Mountain',
+    //   description: 'Place to enjoy the snowy weather',
+    //   price: 100,
+    //   avgRating: 2.5,
+    //   previewImage: 'image url',
+    // }
   ])
 },
 
