@@ -1,10 +1,41 @@
 const express = require('express');
 const router = express.Router();
-const { Spot, User, SpotImage, Reviews} = require('../../db/models');
+const { Spot, User, SpotImage, Review} = require('../../db/models');
 const { requireAuth } = require('../../utils/auth')
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation.js');
 
+router.post('/:spotId/reviews', requireAuth, async (req,res) => {
+    const spotId = req.params.spotId
+    const review = await Review.create({
+        spotId,
+        review,
+        stars,
+    })
+    if(!spotId){
+        res.status(404)
+        return res.json({
+            message: "Spot couldn't be found"
+        })
+    }
+    res.json(review)
+})
+
+router.get('/:spotId/reviews', async (req,res) => {
+    const spot = req.spot.id
+    const reviews = await Review.findAll({
+        where: {
+            spotId: spot
+        }
+    })
+    if(!reviews){
+        res.status(404)
+        return res.json({
+            message: "Spot couldn't be found"
+        })
+    }
+    res.json(reviews)
+})
 
 router.get('/current', requireAuth, async (req,res) => {
     const user = req.user.id;
@@ -60,41 +91,46 @@ const validateSpot = [
     .notEmpty()
     .withMessage("Country is required"),
     check('lat')
-        .notEmpty()
-        .withMessage("Latitude is not valid"),
-        check('lng')
-        .notEmpty()
-        .withMessage("Longitude is not valid"),
-        check('name')
-        .isLength({max:49})
-        .withMessage("Name must be less than 50 characters"),
-        check('description')
-        .notEmpty()
-        .withMessage("Description is required"),
-        check('price')
-        .notEmpty()
-        .withMessage("Price per day is required"),
-        handleValidationErrors
-    ];
+    .notEmpty()
+    .withMessage("Latitude is not valid"),
+    check('lng')
+    .notEmpty()
+    .withMessage("Longitude is not valid"),
+    check('name')
+    .isLength({max:49})
+    .withMessage("Name must be less than 50 characters"),
+    check('description')
+    .notEmpty()
+    .withMessage("Description is required"),
+    check('price')
+    .notEmpty()
+    .withMessage("Price per day is required"),
+    handleValidationErrors
+];
 
-    router.post('/:spotId/images', requireAuth, async(req,res) => {
-        const spotId = req.params.spotId
-        const spotImage = await SpotImage.create({
-            spotId
+router.post('/:spotId/images', requireAuth, async(req,res) => {
+    const user = req.user.id
+    const spotId = req.params.spotId
+    const {url, preview } = req.body
+    const owner = spotId.ownerId
+    if(user !== owner) {
+        res.status(403)
+    }
+    const spotImage = await SpotImage.create({
+        spotId,
+    })
+    if(!spotId){
+        res.status(404)
+        return res.json({
+            message: "Spot couldn't be found"
         })
-        if(!spotId){
-            res.status(404)
-            return res.json({
-                message: "Spot couldn't be found"
-            })
         }
-        res.json(spotImage)
+        res.json({spotImage, url, preview})
     })
 
     router.delete('/:spotId', requireAuth, async (req,res) => {
         const user = req.user.id
         const spot = await Spot.findByPk(req.params.spotId);
-        console.log(user, spot)
 
         if(user === spot.ownerId){
             await spot.destroy();
@@ -176,20 +212,6 @@ router.get('/', async (req,res) => {
         })
     })
 
-    router.get('/:spotId/reviews', async (req,res) => {
-        const spot = req.spot.id
-        const reviews = await Reviews.findAll({
-            where: {
-                spotId: spot
-            }
-        })
-        if(!reviews){
-            res.status(404)
-            return res.json({
-                message: "Spot couldn't be found"
-            })
-        }
-        res.json(reviews)
-    })
+
 
     module.exports = router;
