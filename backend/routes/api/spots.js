@@ -111,13 +111,13 @@ const validateSpot = [
 router.get('/:spotId/bookings', requireAuth, async(req,res) => {
     const spotId = req.params.spotId
     const bookings = await Booking.findAll()
-    res.json(bookings)
     if(!spotId){
         res.status(404)
         return res.json({
             message: "Spot couldn't be found"
         })
     }
+    res.json(bookings)
 })
 
 router.post('/:spotId/bookings', requireAuth, async(req,res) => {
