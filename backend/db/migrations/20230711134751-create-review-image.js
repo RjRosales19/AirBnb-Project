@@ -19,7 +19,7 @@ module.exports = {
         references:{
           model: 'Reviews',
           key: "id"
-        },
+        }
       },
       url: {
         type: Sequelize.STRING
