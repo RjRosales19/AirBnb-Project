@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { Spot, User, SpotImage, Review} = require('../../db/models');
+const { Spot, User, SpotImage, Review, Booking} = require('../../db/models');
 const { requireAuth } = require('../../utils/auth')
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation.js');
@@ -53,8 +53,8 @@ router.get('/current', requireAuth, async (req,res) => {
     res.json(userSpots)
 })
 
-router.get('/:id', async (req,res) => {
-    const spot = await Spot.findByPk(req.params.id, {
+router.get('/:spotId', async (req,res) => {
+    const spot = await Spot.findByPk(req.params.spotId, {
         include:
         [
             {
@@ -107,6 +107,32 @@ const validateSpot = [
     .withMessage("Price per day is required"),
     handleValidationErrors
 ];
+
+router.get('/:spotId/bookings', requireAuth, async(req,res) => {
+    const spotId = req.params.spotId
+    const bookings = await Booking.findAll()
+    res.json(bookings)
+    if(!spotId){
+        res.status(404)
+        return res.json({
+            message: "Spot couldn't be found"
+        })
+    }
+})
+
+router.post('/:spotId/bookings', requireAuth, async(req,res) => {
+    const spotId = req.params.spotId
+    const booking = await Booking.create({
+        spotId
+    })
+    if(!spotId){
+        res.status(404)
+        return res.json({
+            message: "Spot couldn't be found"
+        })
+    }
+        res.json(booking)
+})
 
 router.post('/:spotId/images', requireAuth, async(req,res) => {
     const user = req.user.id
@@ -204,8 +230,7 @@ router.post('/', requireAuth, validateSpot , async(req,res,next) => {
 })
 
 router.get('/', async (req,res) => {
-    const spots = await Spot.findAll(
-        )
+    const spots = await Spot.findAll()
         res.json(spots)
         return res.json({
             message: "Spot couldn't be found"
