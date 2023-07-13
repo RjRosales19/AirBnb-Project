@@ -5,6 +5,37 @@ const { requireAuth } = require('../../utils/auth')
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation.js');
 
+const validateSpot = [
+    check('address')
+    .notEmpty()
+    .withMessage("Street address is required"),
+    check('city')
+    .notEmpty()
+    .withMessage("City is required"),
+    check('state')
+    .notEmpty()
+    .withMessage("State is required"),
+    check('country')
+    .notEmpty()
+    .withMessage("Country is required"),
+    check('lat')
+    .notEmpty()
+    .withMessage("Latitude is not valid"),
+    check('lng')
+    .notEmpty()
+    .withMessage("Longitude is not valid"),
+    check('name')
+    .isLength({max:49})
+    .withMessage("Name must be less than 50 characters"),
+    check('description')
+    .notEmpty()
+    .withMessage("Description is required"),
+    check('price')
+    .notEmpty()
+    .withMessage("Price per day is required"),
+    handleValidationErrors
+];
+
 router.post('/:spotId/reviews', requireAuth, async (req,res) => {
     const spotId = req.params.spotId
     const review = await Review.create({
@@ -77,36 +108,6 @@ router.get('/:spotId', async (req,res) => {
     res.json(spot)
 })
 
-const validateSpot = [
-    check('address')
-    .notEmpty()
-    .withMessage("Street address is required"),
-    check('city')
-    .notEmpty()
-    .withMessage("City is required"),
-    check('state')
-    .notEmpty()
-    .withMessage("State is required"),
-    check('country')
-    .notEmpty()
-    .withMessage("Country is required"),
-    check('lat')
-    .notEmpty()
-    .withMessage("Latitude is not valid"),
-    check('lng')
-    .notEmpty()
-    .withMessage("Longitude is not valid"),
-    check('name')
-    .isLength({max:49})
-    .withMessage("Name must be less than 50 characters"),
-    check('description')
-    .notEmpty()
-    .withMessage("Description is required"),
-    check('price')
-    .notEmpty()
-    .withMessage("Price per day is required"),
-    handleValidationErrors
-];
 
 router.get('/:spotId/bookings', requireAuth, async(req,res) => {
     const spotId = req.params.spotId
@@ -143,7 +144,7 @@ router.post('/:spotId/images', requireAuth, async(req,res) => {
         res.status(403)
     }
     const spotImage = await SpotImage.create({
-        spotId,
+        spotId
     })
     if(!spotId){
         res.status(404)
@@ -151,7 +152,7 @@ router.post('/:spotId/images', requireAuth, async(req,res) => {
             message: "Spot couldn't be found"
         })
         }
-        res.json({spotImage, url, preview})
+        res.json({spotImage: {url,preview}})
     })
 
     router.delete('/:spotId', requireAuth, async (req,res) => {
@@ -231,7 +232,7 @@ router.post('/', requireAuth, validateSpot , async(req,res,next) => {
 
 router.get('/', async (req,res) => {
     const spots = await Spot.findAll()
-        res.json(spots)
+        res.json({Spots: spots})
         return res.json({
             message: "Spot couldn't be found"
         })
