@@ -128,7 +128,7 @@ router.get('/current', requireAuth, async (req,res) => {
     const userSpots = await Spot.findAll({
         where: {
             ownerId: user
-        }
+        },
     })
     if(!userSpots){
         res.status(404)
@@ -169,15 +169,16 @@ router.get('/:spotId', async (req,res) => {
     router.delete('/:spotId', requireAuth, async (req,res) => {
         const user = req.user.id
         const spot = await Spot.findByPk(req.params.spotId);
-
+        
         if(!spot){
             return res.status(404).json({message: "Spot couldn't be found"});
         }
-        if(user === spot.ownerId){
-            await spot.destroy();
-            return res.json({ message: "Successfully deleted"})
+        if(user !== spot.ownerId){
+            return res.status(401).json({ message: 'Invalid credentials'})
         }
-        res.status(401).json({ message: 'Invalid credentials'})
+
+        await spot.destroy();
+        return res.json({ message: "Successfully deleted"})
     })
 
     router.put('/:spotId', requireAuth, async (req,res) => {
@@ -238,7 +239,7 @@ router.post('/', requireAuth, validateSpot , async(req,res,next) => {
         description,
         price
     })
-    res.json(newSpot)
+    res.status(201).json(newSpot)
 })
 
 router.get('/', async (req,res) => {
