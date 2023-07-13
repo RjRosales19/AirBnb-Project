@@ -43,7 +43,7 @@ router.get('/current', requireAuth, async (req,res) => {
             message: "Spot couldn't be found"
         })
     }
-    res.json(userReviews)
+    res.json({Reviews: userReviews})
 })
 
 router.post('/:reviewId/images', requireAuth, async(req,res) => {

@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { Booking } = require('../../db/models');
+const { Booking, Spot } = require('../../db/models');
 const { requireAuth } = require('../../utils/auth')
 
 router.get('/current', requireAuth, async (req,res) => {
@@ -8,7 +8,13 @@ router.get('/current', requireAuth, async (req,res) => {
     const userSpots = await Booking.findAll({
         where: {
             spotId: user
-        }
+        },
+        include: [
+            {
+                model:Spot,
+                attributes: ['id', 'ownerId','address','city','state','country','lat','lng','name','price','previewImage']
+            }
+        ]
     })
     if(!userSpots){
         res.status(404)
@@ -16,7 +22,7 @@ router.get('/current', requireAuth, async (req,res) => {
             message: "Spot couldn't be found"
         })
     }
-    res.json(userSpots)
+    res.json({Bookings: userSpots})
 })
 
 router.put('/:bookingId', requireAuth, async (req, res) => {

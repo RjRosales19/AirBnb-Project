@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { Spot, User, SpotImage, Review, Booking} = require('../../db/models');
+const { Spot, User, SpotImage, Review, Booking, ReviewImage } = require('../../db/models');
 const { requireAuth } = require('../../utils/auth')
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation.js');
@@ -42,31 +42,66 @@ const validateSpot = [
         .exists({ checkFalsy: true })
         .notEmpty()
         .withMessage("Price per day is required"),
-    handleValidationErrors
-];
+        handleValidationErrors
+    ];
 
-router.post('/:spotId/reviews', requireAuth, async (req,res) => {
-    const spotId = req.params.spotId
-    const review = await Review.create({
-        spotId,
-        review,
-        stars,
-    })
-    if(!spotId){
-        res.status(404)
-        return res.json({
-            message: "Spot couldn't be found"
+    // const validateDate = [
+    //     check('startDate')
+    //     .exists({ checkFalsy: true })
+    //     .custom((val) => {
+    //         const currDate = new Date();
+    //         const startDate = new Date(val);
+    //         if(currDate > startDate){
+    //             throw new Error ("End date conflicts with an existing booking")
+    //         }
+    //         return true;
+    //     })
+    //     .withMessage("End date conflicts with an existing booking"),
+    // check('endDate')
+    //     .exists({ checkFalsy: true })
+    //     .custom((val, {req}) => {
+    //         const endDate = new Date(val);
+    //         const startDate = new Date (req.body.startDate);
+    //         if(startDate > endDate) {
+    //             throw new Error ("Start date conflicts with an existing booking")
+    //         }
+    //         return true;
+    //     }),
+    //     handleValidationErrors
+    // ]
+
+    router.post('/:spotId/reviews', requireAuth, async (req,res) => {
+        const spotId = req.params.spotId
+        const review = await Review.create({
+            spotId,
+            review,
+            stars,
         })
-    }
-    res.json(review)
-})
+        if(!spotId){
+            res.status(404)
+            return res.json({
+                message: "Spot couldn't be found"
+            })
+        }
+        res.status(201).json(review)
+    })
 
 router.get('/:spotId/reviews', async (req,res) => {
-    const spot = req.spot.id
+    const spot = req.params.spotId
     const reviews = await Review.findAll({
         where: {
             spotId: spot
-        }
+        },
+        include:[
+            {
+                model:User,
+                attributes: ['id','firstName','lastName']
+            },
+            {
+                model:ReviewImage,
+                attributes: ['id','url']
+            }
+        ]
     })
     if(!reviews){
         res.status(404)
@@ -74,19 +109,24 @@ router.get('/:spotId/reviews', async (req,res) => {
             message: "Spot couldn't be found"
         })
     }
-    res.json(reviews)
+    res.json({Reviews: reviews})
 })
+
 
 router.get('/:spotId/bookings', requireAuth, async(req,res) => {
     const spotId = req.params.spotId
+    const user = req.user.id
     const bookings = await Booking.findAll()
+    if(user === bookings.userId){
+        res.json({Bookings:bookings})
+    }
     if(!spotId){
         res.status(404)
         return res.json({
             message: "Spot couldn't be found"
         })
     }
-    res.json(bookings)
+    res.json({Bookings: bookings})
 })
 
 router.post('/:spotId/bookings', requireAuth, async(req,res) => {
@@ -109,10 +149,12 @@ router.post('/:spotId/images', requireAuth, async(req,res) => {
     const {url, preview } = req.body
     const owner = spotId.ownerId
     if(user !== owner) {
-        res.status(403)
+        res.status(403).json({message: "Forbidden"})
     }
     const spotImage = await SpotImage.create({
-        spotId
+        spotId,
+        url,
+        preview
     })
     if(!spotId){
         res.status(404)
@@ -169,7 +211,7 @@ router.get('/:spotId', async (req,res) => {
     router.delete('/:spotId', requireAuth, async (req,res) => {
         const user = req.user.id
         const spot = await Spot.findByPk(req.params.spotId);
-        
+
         if(!spot){
             return res.status(404).json({message: "Spot couldn't be found"});
         }
@@ -181,7 +223,7 @@ router.get('/:spotId', async (req,res) => {
         return res.json({ message: "Successfully deleted"})
     })
 
-    router.put('/:spotId', requireAuth, async (req,res) => {
+    router.put('/:spotId', requireAuth, validateSpot, async (req,res) => {
         const updatedSpot = await Spot.findByPk(req.params.spotId)
         const { ownerId, address, city, state, country, lat, lng, name, description, price } = req.body
 
@@ -208,19 +250,19 @@ router.get('/:spotId', async (req,res) => {
         }
         if(name !== undefined){
         updatedSpot.name = name;
-    }
-    if(description !== undefined){
-        updatedSpot.description = description;
-    }
-    if(price !== undefined){
-        updatedSpot.price = price;
-    }
+        }
+        if(description !== undefined){
+            updatedSpot.description = description;
+        }
+        if(price !== undefined){
+            updatedSpot.price = price;
+        }
 
     await updatedSpot.save();
 
-    res.json({
+    res.json(
         updatedSpot
-    })
+    )
 
 })
 
@@ -245,11 +287,29 @@ router.post('/', requireAuth, validateSpot , async(req,res,next) => {
 router.get('/', async (req,res) => {
     const spots = await Spot.findAll()
         res.json({Spots: spots})
+
         return res.json({
             message: "Spot couldn't be found"
         })
     })
 
+router.get('/', async (req, res) => {
+    let {page, size, minLat, maxLat, minLng, maxLng, minPrice, maxPrice} = req.query
+    let queryObj = {
+        order: [['spot', 'ASC']],
+        where: {},
+        include: []
+    }
+
+    if(!page) page = 1
+    if(!size) size = 20
+
+    if(size >= 1 && page >=1 ) {
+        queryObj.limit = size
+        queryObj.offset = (page - 1) * size
+    }
+
+})
 
 
-    module.exports = router;
+module.exports = router;

@@ -40,11 +40,15 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Spot.init({
+    id: {
+      allowNull: false,
+      autoIncrement: true,
+      primaryKey: true,
+      type: DataTypes.INTEGER
+    },
     ownerId: {
       type: DataTypes.INTEGER,
       allowNull:false,
-      autoIncrement:true,
-      primaryKey: true
     },
     address: {
       type: DataTypes.STRING
@@ -72,12 +76,6 @@ module.exports = (sequelize, DataTypes) => {
     },
     price: {
       type: DataTypes.INTEGER
-    },
-    avgRating: {
-      type: DataTypes.DECIMAL
-    },
-    previewImage: {
-      type: DataTypes.STRING
     }
   }, {
     sequelize,
