@@ -45,12 +45,12 @@ router.delete('/:bookingId', requireAuth, async (req,res) => {
     const user =  req.user.id
     const booking = await Booking.findByPk(req.params.bookingId);
 
-    if(user === booking.userId){
-        await booking.destroy();
-        return res.json({message: "Successfully deleted"})
-    }
     if(!booking){
         return res.status(404).json({message: "Booking couldn't be found"});
+    }
+    if(user === booking.bookingId){
+        await booking.destroy();
+        return res.json({message: "Successfully deleted"})
     }
     res.status(401).json({ message: 'Invalid credentials'})
 })

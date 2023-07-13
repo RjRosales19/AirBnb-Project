@@ -4,25 +4,25 @@ const { Review, User, Spot, ReviewImage } = require('../../db/models');
 const { requireAuth } = require('../../utils/auth')
 
 router.get('/current', requireAuth, async (req,res) => {
-    const user = req.user.id;
+    const userId = req.user.id;
     const userReviews = await Review.findAll({
         where: {
-            userId : user
+            userId : userId
         },
-        // include: [
-        //     {
-        //         model:User,
-        //         attributes: ['id','firstName','lastName']
-        //     },
-        //     {
-        //         model:Spot,
-        //         attributes: ['id', 'ownerId','address','city','state','country','lat','lng','name','price','previewImage']
-        //     },
-        //     {
-        //         model:ReviewImage,
-        //         attributes: ['id','url']
-        //     }
-        // ]
+        include: [
+            {
+                model:User,
+                attributes: ['id','firstName','lastName']
+            },
+            {
+                model:Spot,
+                attributes: ['id', 'ownerId','address','city','state','country','lat','lng','name','price','previewImage']
+            },
+            {
+                model:ReviewImage,
+                attributes: ['id','url']
+            }
+        ]
     })
     if(!userReviews){
         res.status(404)
@@ -71,12 +71,13 @@ router.delete('/:reviewId', requireAuth, async (req, res) => {
     const user =  req.user.id
     const review = await Review.findByPk(req.params.reviewId);
 
-    if(user === review.userId){
-        await review.destroy();
-        return res.json({message: "Successfully deleted"})
-    }
     if(!review){
         return res.status(404).json({message: "Review couldn't be found"});
+    }
+
+    if(user === review.reviewId){
+        await review.destroy();
+        return res.json({message: "Successfully deleted"})
     }
     res.status(401).json({ message: 'Invalid credentials'})
 })
