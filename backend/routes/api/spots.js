@@ -170,7 +170,7 @@ router.post('/:spotId/bookings', requireAuth, async(req,res) => {
     }
     if(userId !== currSpot.ownerId){
         const booking = await Booking.create({
-            spotId,
+            spotId: currSpot.id,
             userId: userId,
             startDate,
             endDate
@@ -182,6 +182,7 @@ router.post('/:spotId/bookings', requireAuth, async(req,res) => {
 router.post('/:spotId/images', requireAuth, async(req,res) => {
     const user = req.user.id
     const currSpotId = req.params.spotId
+    const {url, preview } = req.body
     const spot = await Spot.findByPk(currSpotId, {
         include: [
             {
@@ -190,7 +191,6 @@ router.post('/:spotId/images', requireAuth, async(req,res) => {
             }
         ]
     })
-    const {url, preview } = req.body
     if(!spot){
         res.status(404)
         return res.json({
@@ -216,20 +216,48 @@ router.get('/current', requireAuth, async (req,res) => {
     const userSpots = await Spot.findAll({
         where: {
             ownerId: user
-        }
+        },
     })
+    const avgStarRating = await Review.findAll(req.params.reviewId)
+    let maxAvg = 5
+    let minAvg = 1
+
+    avgStarRating.forEach(starRating => {
+        if(starRating.stars > maxAvg) maxAvg = starRating.stars;
+        if(starRating.stars < minAvg) minAvg = starRating.stars;
+    })
+    const sumAvg = avgStarRating.reduce((sum, starRating) =>(
+        sum + starRating.stars
+    ),0);
+    const avg = sumAvg / avgStarRating.length
+
     if(!userSpots){
         res.status(404)
         return res.json({
             message: "Spot couldn't be found"
         })
     }
-    res.json(userSpots)
+    const data = {avg};
+    data.userSpots = {
+                id: userSpots.id,
+                ownerId: userSpots.ownerId,
+                address: userSpots.address,
+                city: userSpots.city,
+                state: userSpots.state,
+                country: userSpots.country,
+                lat: userSpots.lat,
+                lng: userSpots.lng,
+                name: userSpots.name,
+                description: userSpots.description,
+                price: userSpots.price,
+                numReviews: userSpots.numReviews,
+                avgStarRating: userSpots.avg
+    }
+    res.json(data)
 })
 
 router.get('/:spotId', async (req,res) => {
     const spot = await Spot.findByPk(req.params.spotId, {
-
         include:
         [
             {
@@ -253,6 +281,7 @@ router.get('/:spotId', async (req,res) => {
         const avgStarRating = await Review.findAll(req.params.reviewId)
         let maxAvg = 5
         let minAvg = 1
+
         avgStarRating.forEach(starRating => {
             if(starRating.stars > maxAvg) maxAvg = starRating.stars;
             if(starRating.stars < minAvg) minAvg = starRating.stars;
@@ -264,23 +293,24 @@ router.get('/:spotId', async (req,res) => {
         const numReviews = await Review.count({
             where: {spotId: spot.id}
         })
-        console.log(avg, numReviews)
-        const data = {}
-        data.spot = {
-            id: spot.id,
-            ownerId: spot.ownerId,
-            address: spot.address,
-            city: spot.city,
-            state: spot.state,
-            country: spot.country,
-            lat: spot.lat,
-            lng: spot.lng,
-            name: spot.name,
-            description: spot.description,
-            price: spot.price,
-        }
+            const data = {avg, numReviews}
+            data.spot = {
+                id: spot.id,
+                ownerId: spot.ownerId,
+                address: spot.address,
+                city: spot.city,
+                state: spot.state,
+                country: spot.country,
+                lat: spot.lat,
+                lng: spot.lng,
+                name: spot.name,
+                description: spot.description,
+                price: spot.price,
+                numReviews: spot.numReviews,
+                avgStarRating: spot.avg
+            }
+            res.json(data)
     }
-    res.json(spot)
 })
 
 
