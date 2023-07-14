@@ -165,7 +165,7 @@ router.post('/:spotId/bookings', requireAuth, async(req,res) => {
             message: "Spot couldn't be found"
         })
     }
-    if(startDate >= endDate){
+    if(new Date(startDate) >= new Date(endDate)){
         return res.status(400).json({message: "endDate cannot be on or before startDate"})
     }
     if(userId !== currSpot.ownerId){
@@ -176,6 +176,33 @@ router.post('/:spotId/bookings', requireAuth, async(req,res) => {
             endDate
         })
         res.json(booking)
+    }
+    const conflicting = await Booking.findOne({
+        where: {
+            spotId: spotId,
+            [Op.or]: [
+                {
+
+                    startDate: {
+                        [Op.between]: [startDate, endDate]
+                    }
+                },{
+
+                    endDate: {
+                        [Op.between]: [startDate, endDate]
+                    }
+                }
+            ]
+        }
+    })
+    if(conflicting){
+        return res.status(403).json({
+            message: "Sorry, this spot is already booked for the specified dates",
+            errors:{
+                startDate:"Start date conflicts with an existing booking",
+                endDate:"End date conflicts with an existing booking",
+            }
+        })
     }
 })
 
@@ -217,43 +244,50 @@ router.get('/current', requireAuth, async (req,res) => {
         where: {
             ownerId: user
         },
+        include:
+        [
+            {
+                model: Review,
+                attributes: ['id', 'spotId','userId', 'review', 'stars']
+            },
+            {
+                model: SpotImage,
+                attributes: ['spotId','url','preview']
+            }
+        ]
     })
-    const avgStarRating = await Review.findAll(req.params.reviewId)
-    let maxAvg = 5
-    let minAvg = 1
-
-    avgStarRating.forEach(starRating => {
-        if(starRating.stars > maxAvg) maxAvg = starRating.stars;
-        if(starRating.stars < minAvg) minAvg = starRating.stars;
-    })
-    const sumAvg = avgStarRating.reduce((sum, starRating) =>(
-        sum + starRating.stars
-    ),0);
-    const avg = sumAvg / avgStarRating.length
-
     if(!userSpots){
         res.status(404)
         return res.json({
             message: "Spot couldn't be found"
         })
     }
-    const data = {avg};
-    data.userSpots = {
-                id: userSpots.id,
-                ownerId: userSpots.ownerId,
-                address: userSpots.address,
-                city: userSpots.city,
-                state: userSpots.state,
-                country: userSpots.country,
-                lat: userSpots.lat,
-                lng: userSpots.lng,
-                name: userSpots.name,
-                description: userSpots.description,
-                price: userSpots.price,
-                numReviews: userSpots.numReviews,
-                avgStarRating: userSpots.avg
-    }
-    res.json(data)
+
+    let spotsList = [];
+
+    userSpots.forEach(spot => {
+        spotsList.push(spot.toJSON())
+    })
+
+    spotsList.forEach(list => {
+        let count = 0
+        let totalStars = 0
+        list.Reviews.forEach(review =>{
+        let rating = review.stars
+        totalStars += rating
+        count++
+    })
+    avg = totalStars / count
+    list.SpotImages.forEach(image => {
+        let imageUrl = image.url
+        list.previewImage = imageUrl
+    })
+    list.avgRating = avg
+    delete list.Reviews
+    delete list.SpotImages
+})
+
+    res.json({Spots: spotsList})
 })
 
 router.get('/:spotId', async (req,res) => {
@@ -276,8 +310,7 @@ router.get('/:spotId', async (req,res) => {
         return res.json({
             message: "Spot couldn't be found"
         })
-    }
-    else{
+    }else{
         const avgStarRating = await Review.findAll(req.params.reviewId)
         let maxAvg = 5
         let minAvg = 1
@@ -293,23 +326,10 @@ router.get('/:spotId', async (req,res) => {
         const numReviews = await Review.count({
             where: {spotId: spot.id}
         })
-            const data = {avg, numReviews}
-            data.spot = {
-                id: spot.id,
-                ownerId: spot.ownerId,
-                address: spot.address,
-                city: spot.city,
-                state: spot.state,
-                country: spot.country,
-                lat: spot.lat,
-                lng: spot.lng,
-                name: spot.name,
-                description: spot.description,
-                price: spot.price,
-                numReviews: spot.numReviews,
-                avgStarRating: spot.avg
-            }
-            res.json(data)
+            const currSpot = spot.toJSON()
+            currSpot.numReviews = numReviews,
+            currSpot.avgStarRating = avg
+            res.json(currSpot)
     }
 })
 
@@ -395,7 +415,7 @@ router.post('/', requireAuth, validateSpot , async(req,res,next) => {
 })
 
 router.get('/', async (req,res) => {
-    const spots = await Spot.findAll({
+    const allSpots = await Spot.findAll({
         include:[
             {
                 model:Review,
@@ -407,45 +427,54 @@ router.get('/', async (req,res) => {
             }
         ]
     })
-    let spotsList = [];
-    spots.forEach(spot => {
-        spotsList.push(spot.toJSON())
-    })
-    let numReviews = 0
-    spotsList.forEach(spot => {
-        spot.SpotImages.forEach(spotImage => {
-            if(spotImage.previewImage === true){
-                spot.previewImage = spotImage.url
-            }
-        })
-    })
-    res.json(spotsList)
-
-    if(!spots){
+    if(!allSpots){
         return res.json({
             message: "Spot couldn't be found"
         })
     }
-    res.json({Spots: spots})
+let spotsList = [];
+allSpots.forEach(spot => {
+    spotsList.push(spot.toJSON())
+})
+spotsList.forEach(list => {
+    let count = 0
+    let totalStars = 0
+    list.Reviews.forEach(review =>{
+        let rating = review.stars
+        totalStars += rating
+        count++
+    })
+    avg = totalStars / count
+    list.SpotImages.forEach(image => {
+        let imageUrl = image.url
+        list.previewImage = imageUrl
+    })
+    list.avgRating = avg
+    delete list.Reviews
+    delete list.SpotImages
 })
 
-router.get('/', async (req, res) => {
-    let {page, size, minLat, maxLat, minLng, maxLng, minPrice, maxPrice} = req.query
-    let queryObj = {
-        order: [['spot', 'ASC']],
-        where: {},
-        include: []
-    }
 
-    if(!page) page = 1
-    if(!size) size = 20
-
-    if(size >= 1 && page >=1 ) {
-        queryObj.limit = size
-        queryObj.offset = (page - 1) * size
-    }
-
+return res.json({Spots: spotsList})
 })
+
+// router.get('/', async (req, res) => {
+//     let {page, size, minLat, maxLat, minLng, maxLng, minPrice, maxPrice} = req.query
+//     let queryObj = {
+//         order: [['spot', 'ASC']],
+//         where: {},
+//         include: []
+//     }
+
+//     if(!page) page = 1
+//     if(!size) size = 20
+
+//     if(size >= 1 && page >=1 ) {
+//         queryObj.limit = size
+//         queryObj.offset = (page - 1) * size
+//     }
+
+// })
 
 
 module.exports = router;

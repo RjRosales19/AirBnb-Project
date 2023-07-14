@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { Review, User, Spot, ReviewImage } = require('../../db/models');
+const { Review, User, Spot, ReviewImage, SpotImage } = require('../../db/models');
 const { requireAuth } = require('../../utils/auth')
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation.js');
@@ -62,12 +62,13 @@ router.get('/current', requireAuth, async (req,res) => {
             },
             {
                 model:Spot,
-                attributes: ['id', 'ownerId','address','city','state','country','lat','lng','name','price','previewImage']
+                attributes: ['id', 'ownerId','address','city','state','country','lat','lng','name','price','previewImage'],
+                include: [{model:SpotImage, attributes:['spotId','url','preview']}]
             },
             {
                 model:ReviewImage,
                 attributes: ['id','url']
-            }
+            },
         ]
     })
     if(!userReviews){
@@ -76,7 +77,22 @@ router.get('/current', requireAuth, async (req,res) => {
             message: "Spot couldn't be found"
         })
     }
-    res.json({Reviews: userReviews})
+    let imageList = [];
+
+    userReviews.forEach(review => {
+        imageList.push(review.toJSON())
+    })
+
+    imageList.forEach(list => {
+        console.log(list.Spot.SpotImages.preview)
+        list.Spot.SpotImages.forEach(image => {
+            console.log(list.Spot.SpotImages)
+            let imageUrl = image.url
+            list.Spot.previewImage = imageUrl
+        })
+        delete list.Spot.SpotImages
+    })
+    res.json({Reviews: imageList})
 })
 
 
