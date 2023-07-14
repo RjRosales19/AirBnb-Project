@@ -28,9 +28,7 @@ module.exports = {
       lng: -119.1231299,
       name: 'Korean BBQ',
       description: 'Place to enjoy KBBQ',
-      price: 35,
-      avgRating: 3,
-      previewImage: 'image url',
+      price: 35
     },
     {
       ownerId:2,
@@ -42,9 +40,7 @@ module.exports = {
       lng: -200.3411299,
       name: 'Eternal',
       description: 'Place you can meditate in peace',
-      price: 10,
-      avgRating: 4,
-      previewImage: 'image url',
+      price: 10
     },
     {
       ownerId:3,
@@ -56,9 +52,7 @@ module.exports = {
       lng: -125.1123134,
       name: 'Sun Beach',
       description: 'Place to enjoy the beach',
-      price: 20,
-      avgRating: 4.5,
-      previewImage: 'image url',
+      price: 20
     },
     // {
     //   ownerId:4,

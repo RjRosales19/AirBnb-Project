@@ -7,15 +7,48 @@ const { handleValidationErrors } = require('../../utils/validation.js');
 
 const validateReview = [
     check('review')
-        .exists({ checkFalsy: true })
-        .notEmpty()
-        .withMessage("Review text is required"),
+    .exists({ checkFalsy: true })
+    .notEmpty()
+    .withMessage("Review text is required"),
     check('stars')
-        .exists({ checkFalsy: true })
-        .notEmpty()
-        .withMessage("Stars must be an integer from 1 to 5"),
+    .exists({ checkFalsy: true })
+    .notEmpty()
+    .withMessage("Stars must be an integer from 1 to 5"),
     handleValidationErrors
 ];
+router.post('/:reviewId/images', requireAuth, async(req,res) => {
+    const user = req.user.id
+    const currReviewId = req.params.reviewId
+    const review = await Review.findByPk(currReviewId,{
+        include:
+        [
+            {
+                model: ReviewImage,
+                attributes: ['id','reviewId','url']
+            }
+        ]
+    })
+    const {url} = req.body
+    if(!review){
+        res.status(404)
+        return res.json({
+            message: "Review couldn't be found"
+        })
+    }
+    if(user !== review.userId){
+        return res.status(401).json({ message: 'Invalid credentials'})
+    }
+    if(review.ReviewImages.length > 10){
+        return res.status(403).json({ message: 'Maximum number of images for this resource was reached'})
+    }
+    const reviewImage = await ReviewImage.create({
+        reviewId: currReviewId,
+        url
+    })
+    const { createdAt, updatedAt, reviewId, ...newImageData} = reviewImage.toJSON()
+    res.status(201).json(newImageData)
+})
+
 router.get('/current', requireAuth, async (req,res) => {
     const userId = req.user.id;
     const userReviews = await Review.findAll({
@@ -46,19 +79,6 @@ router.get('/current', requireAuth, async (req,res) => {
     res.json({Reviews: userReviews})
 })
 
-router.post('/:reviewId/images', requireAuth, async(req,res) => {
-    const reviewId = req.params.reviewId
-    const reviewImage = await ReviewImage.create({
-        reviewId
-    })
-    if(!reviewId){
-        res.status(404)
-        return res.json({
-            message: "Review couldn't be found"
-        })
-        }
-        res.status(201).json(reviewImage)
-})
 
 router.put('/:reviewId', requireAuth, validateReview, async (req,res) => {
     const user = req.user.id
@@ -74,7 +94,8 @@ router.put('/:reviewId', requireAuth, validateReview, async (req,res) => {
     if(stars !== undefined){
         updatedReview.stars = stars;
     }
-    if(user === updatedReview.spotId){
+    if(user !== updatedReview.userId){
+        return res.status(401).json({ message: 'Invalid credentials'})
     }
     await updatedReview.save();
     res.status(201).json(updatedReview)
@@ -89,7 +110,7 @@ router.delete('/:reviewId', requireAuth, async (req, res) => {
         return res.status(404).json({message: "Review couldn't be found"});
     }
 
-    if(user === review.reviewId){
+    if(user === review.userId){
         await review.destroy();
         return res.json({message: "Successfully deleted"})
     }
