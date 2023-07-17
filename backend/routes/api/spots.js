@@ -5,6 +5,7 @@ const { requireAuth } = require('../../utils/auth')
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation.js');
 const { Sequelize } = require('sequelize');
+const { Op } = require('sequelize')
 
 const validateReview = [
     check('review')
@@ -59,6 +60,42 @@ const validateSpot = [
         .withMessage("Price per day is required"),
         handleValidationErrors
     ];
+
+    // const validateQuery = [
+    //     check('page')
+    //         .exists({ checkFalsy: true })
+    //         .notEmpty()
+    //         .withMessage("Page must be greater than or equal to 1"),
+    //     check('size')
+    //         .exists({ checkFalsy: true })
+    //         .notEmpty()
+    //         .withMessage("Size must be greater than or equal to 1"),
+    //     check('maxLat')
+    //         .exists({ checkFalsy: true })
+    //         .notEmpty()
+    //         .withMessage("Maximum latitude is invalid"),
+    //     check('minLat')
+    //         .exists({ checkFalsy: true })
+    //         .notEmpty()
+    //         .withMessage("Minimum latitude is invalid"),
+    //     check('minLng')
+    //         .exists({ checkFalsy: true })
+    //         .notEmpty()
+    //         .withMessage("Minimum longitude is invalid"),
+    //     check('maxLng')
+    //         .exists({ checkFalsy: true })
+    //         .notEmpty()
+    //         .withMessage("Maximum longitude is invalid"),
+    //     check('minPrice')
+    //         .exists({ checkFalsy: true })
+    //         .isLength({max:49})
+    //         .withMessage("Minimum price must be greater than or equal to 0"),
+    //     check('maxPrice')
+    //         .exists({ checkFalsy: true })
+    //         .notEmpty()
+    //         .withMessage("Maximum price must be greater than or equal to 0"),
+    //     handleValidationErrors
+    // ]
 
 
     router.post('/:spotId/reviews', requireAuth, validateReview, async (req,res) => {
@@ -152,7 +189,7 @@ router.get('/:spotId/bookings', requireAuth, async(req,res) => {
     return res.json({Bookings: bookings})
 })
 
-
+// accepts overlapping bookings of the same spot
 router.post('/:spotId/bookings', requireAuth, async(req,res) => {
     const spotId = req.params.spotId
     const userId = req.user.id
@@ -164,18 +201,6 @@ router.post('/:spotId/bookings', requireAuth, async(req,res) => {
         return res.json({
             message: "Spot couldn't be found"
         })
-    }
-    if(new Date(startDate) >= new Date(endDate)){
-        return res.status(400).json({message: "endDate cannot be on or before startDate"})
-    }
-    if(userId !== currSpot.ownerId){
-        const booking = await Booking.create({
-            spotId: currSpot.id,
-            userId: userId,
-            startDate,
-            endDate
-        })
-        res.json(booking)
     }
     const conflicting = await Booking.findOne({
         where: {
@@ -203,6 +228,18 @@ router.post('/:spotId/bookings', requireAuth, async(req,res) => {
                 endDate:"End date conflicts with an existing booking",
             }
         })
+    }
+    if(new Date(startDate) >= new Date(endDate)){
+        return res.status(400).json({message: "endDate cannot be on or before startDate"})
+    }
+    if(userId !== currSpot.ownerId){
+        const booking = await Booking.create({
+            spotId: currSpot.id,
+            userId: userId,
+            startDate,
+            endDate
+        })
+        res.json(booking)
     }
 })
 
@@ -354,11 +391,11 @@ router.get('/:spotId', async (req,res) => {
         const user = req.user.id
         const updatedSpot = await Spot.findByPk(req.params.spotId)
         const { address, city, state, country, lat, lng, name, description, price } = req.body
-        if(user !== updatedSpot.ownerId){
-            return res.status(401).json({ message: 'Invalid credentials'})
-        }
         if(!updatedSpot){
             return res.status(404).json({message: "Spot couldn't be found"});
+        }
+        if(user !== updatedSpot.ownerId){
+            return res.status(401).json({ message: 'Invalid credentials'})
         }
         if(address !== undefined){
             updatedSpot.address = address;
@@ -414,8 +451,49 @@ router.post('/', requireAuth, validateSpot , async(req,res,next) => {
     res.status(201).json(newSpot)
 })
 
-router.get('/', async (req,res) => {
+// const { page, size, minLat, maxLat, minLng, maxLng, minPrice, maxPrice } = req.query
+// page = parseInt(page);
+// size = parseInt(size);
+// minLat = parseFloat(minLat);
+    // maxLat = parseFloat(maxLat);
+    // minLng = parseFloat(minLng);
+    // maxLng = parseFloat(maxLng);
+    // minPrice = parseFloat(minPrice);
+    // maxPrice = parseFloat(maxPrice);
+
+    // if(page < 1 || page > 10 || isNaN(page)) errors.page = "Page must be greater than or equal to 1"
+    // if(size < 1 || size > 20) errors.size = "Page must be greater than or equal to 1"
+
+    // const errors = {};
+    // if(minLat && isNaN(minLat)) errors.minLat = "Minimum latitude is invalid"
+    // if(maxLat && isNaN(maxLat)) errors.maxLat = "Maximum latitude is invalid"
+    // if(minLng && isNaN(minLng)) errors.minLng = "Minimum longitude is invalid"
+    // if(maxLng && isNaN(maxLng)) errors.maxLng = "Maximum longitude is invalid"
+    // if(minPrice < 0 && isNaN(minPrice)) errors.minPrice = "Minimum price must be greater than or equal to 0"
+    // if(maxPrice < 0 && isNaN(maxPrice)) errors.maxPrice = "Maximum price must be greater than or equal to 0"
+
+    // if(Object.keys(errors).length > 0) {
+        //     res.status(400).json({
+            //         message: 'Bad Request',
+            //         errors: errors
+            //     })
+            // }
+    router.get('/', async (req,res) => {
+
+    const queryfilter = {}
+    let { page, size } = req.query
+    if(!page) page = 1;
+    if(!size) size = 20;
+    const pagination = {};
+    if(size <= 20 && page <= 10 ) {
+        pagination.limit = size
+        pagination.offset = (page - 1) * size
+    }
     const allSpots = await Spot.findAll({
+
+        where:{
+            ...queryfilter
+        },
         include:[
             {
                 model:Review,
@@ -425,7 +503,8 @@ router.get('/', async (req,res) => {
                 model: SpotImage,
                 attributes: ['spotId','url','preview']
             }
-        ]
+        ],
+        ...pagination
     })
     if(!allSpots){
         return res.json({
@@ -455,26 +534,9 @@ spotsList.forEach(list => {
 })
 
 
-return res.json({Spots: spotsList})
+return res.json({Spots: spotsList, page, size})
 })
 
-// router.get('/', async (req, res) => {
-//     let {page, size, minLat, maxLat, minLng, maxLng, minPrice, maxPrice} = req.query
-//     let queryObj = {
-//         order: [['spot', 'ASC']],
-//         where: {},
-//         include: []
-//     }
-
-//     if(!page) page = 1
-//     if(!size) size = 20
-
-//     if(size >= 1 && page >=1 ) {
-//         queryObj.limit = size
-//         queryObj.offset = (page - 1) * size
-//     }
-
-// })
 
 
 module.exports = router;
