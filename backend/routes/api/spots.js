@@ -451,37 +451,20 @@ router.post('/', requireAuth, validateSpot , async(req,res,next) => {
     res.status(201).json(newSpot)
 })
 
-// const { page, size, minLat, maxLat, minLng, maxLng, minPrice, maxPrice } = req.query
-// page = parseInt(page);
-// size = parseInt(size);
 // minLat = parseFloat(minLat);
-    // maxLat = parseFloat(maxLat);
-    // minLng = parseFloat(minLng);
-    // maxLng = parseFloat(maxLng);
-    // minPrice = parseFloat(minPrice);
-    // maxPrice = parseFloat(maxPrice);
+// maxLat = parseFloat(maxLat);
+// minLng = parseFloat(minLng);
+// maxLng = parseFloat(maxLng);
+// minPrice = parseFloat(minPrice);
+// maxPrice = parseFloat(maxPrice);
 
-    // if(page < 1 || page > 10 || isNaN(page)) errors.page = "Page must be greater than or equal to 1"
-    // if(size < 1 || size > 20) errors.size = "Page must be greater than or equal to 1"
+router.get('/', async (req,res) => {
 
-    // const errors = {};
-    // if(minLat && isNaN(minLat)) errors.minLat = "Minimum latitude is invalid"
-    // if(maxLat && isNaN(maxLat)) errors.maxLat = "Maximum latitude is invalid"
-    // if(minLng && isNaN(minLng)) errors.minLng = "Minimum longitude is invalid"
-    // if(maxLng && isNaN(maxLng)) errors.maxLng = "Maximum longitude is invalid"
-    // if(minPrice < 0 && isNaN(minPrice)) errors.minPrice = "Minimum price must be greater than or equal to 0"
-    // if(maxPrice < 0 && isNaN(maxPrice)) errors.maxPrice = "Maximum price must be greater than or equal to 0"
+    let { page, size, minLat, maxLat, minLng, maxLng, minPrice, maxPrice } = req.query
 
-    // if(Object.keys(errors).length > 0) {
-        //     res.status(400).json({
-            //         message: 'Bad Request',
-            //         errors: errors
-            //     })
-            // }
-    router.get('/', async (req,res) => {
 
     const queryfilter = {}
-    let { page, size } = req.query
+    // let { page, size } = req.query
     if(!page) page = 1;
     if(!size) size = 20;
     const pagination = {};
@@ -489,52 +472,69 @@ router.post('/', requireAuth, validateSpot , async(req,res,next) => {
         pagination.limit = size
         pagination.offset = (page - 1) * size
     }
-    const allSpots = await Spot.findAll({
+    const errors = {};
+    if(page < 1 || page > 10 || isNaN(page)) errors.page = "Page must be greater than or equal to 1"
+    if(size < 1 || size > 20) errors.size = "Page must be greater than or equal to 1"
+    if(minLat && isNaN(minLat)) errors.minLat = "Minimum latitude is invalid"
+    if(maxLat && isNaN(maxLat)) errors.maxLat = "Maximum latitude is invalid"
+    if(minLng && isNaN(minLng)) errors.minLng = "Minimum longitude is invalid"
+    if(maxLng && isNaN(maxLng)) errors.maxLng = "Maximum longitude is invalid"
+    if(minPrice < 0 && isNaN(minPrice)) errors.minPrice = "Minimum price must be greater than or equal to 0"
+    if(maxPrice < 0 && isNaN(maxPrice)) errors.maxPrice = "Maximum price must be greater than or equal to 0"
+    if(Object.keys(errors).length > 0) {
+        res.status(400).json({
+            message: 'Bad Request',
+            errors: errors
+        })
+    }
+        const allSpots = await Spot.findAll({
 
-        where:{
-            ...queryfilter
-        },
-        include:[
-            {
-                model:Review,
-                attributes: ['id', 'spotId','userId', 'review', 'stars']
+            where:{
+                ...queryfilter
             },
-            {
-                model: SpotImage,
-                attributes: ['spotId','url','preview']
-            }
-        ],
-        ...pagination
-    })
+            include:[
+                {
+                    model:Review,
+                    attributes: ['id', 'spotId','userId', 'review', 'stars']
+                },
+                {
+                    model: SpotImage,
+                    attributes: ['spotId','url','preview']
+                }
+            ],
+            ...pagination
+        })
     if(!allSpots){
         return res.json({
             message: "Spot couldn't be found"
         })
     }
-let spotsList = [];
-allSpots.forEach(spot => {
-    spotsList.push(spot.toJSON())
-})
-spotsList.forEach(list => {
-    let count = 0
-    let totalStars = 0
-    list.Reviews.forEach(review =>{
-        let rating = review.stars
-        totalStars += rating
-        count++
+    let spotsList = [];
+    allSpots.forEach(spot => {
+        spotsList.push(spot.toJSON())
     })
-    avg = totalStars / count
-    list.SpotImages.forEach(image => {
-        let imageUrl = image.url
-        list.previewImage = imageUrl
+    spotsList.forEach(list => {
+        let count = 0
+        let totalStars = 0
+        list.Reviews.forEach(review =>{
+            let rating = review.stars
+            totalStars += rating
+            count++
+        })
+        avg = totalStars / count
+        list.SpotImages.forEach(image => {
+            let imageUrl = image.url
+            list.previewImage = imageUrl
+        })
+        list.avgRating = avg
+        delete list.Reviews
+        delete list.SpotImages
     })
-    list.avgRating = avg
-    delete list.Reviews
-    delete list.SpotImages
-})
 
+    page = parseInt(page);
+    size = parseInt(size);
 
-return res.json({Spots: spotsList, page, size})
+    return res.json({Spots: spotsList, page, size})
 })
 
 
