@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const { ReviewImage } = require('../../db/models');
 const { requireAuth } = require('../../utils/auth')
-
+// getting message invalid credentials unable to test funtionality with valid image id that was just created
 router.delete('/:imageId', requireAuth, async (req, res) => {
     const user =  req.user.id
     const reviewimage = await ReviewImage.findByPk(req.params.imageId);
