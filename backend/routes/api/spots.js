@@ -153,7 +153,18 @@ router.get('/:spotId/reviews', async (req,res) => {
             message: "Spot couldn't be found"
         })
     }
-    res.json({Reviews: reviews})
+    let imageList = [];
+    reviews.forEach(review=> {
+        imageList.push(review.toJSON())
+    })
+    imageList.forEach(list=> {
+        list.ReviewImages.forEach(image => {
+
+            imageList.push(image)
+        })
+
+    })
+    res.json({Reviews: imageList})
 })
 
 
