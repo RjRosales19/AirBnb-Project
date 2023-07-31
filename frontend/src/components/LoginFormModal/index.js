@@ -45,7 +45,7 @@ function LoginFormModal (){
                 required
             />
             </label>
-            {errors.credential && <p>{errors.credential}</p>}
+            {errors && <p style={{color: 'red'}}>{errors.message}</p>}
             <button type="submit">Log In</button>
         </form>
     </>

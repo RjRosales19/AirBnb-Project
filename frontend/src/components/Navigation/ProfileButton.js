@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useDispatch } from 'react-redux';
 import * as sessionActions from '../../store/session';
+import "./Navigation.css";
 
 
 function ProfileButton({ user }) {
@@ -36,8 +37,9 @@ function ProfileButton({ user }) {
 const ulClassName = "profile-dropdown" + (showMenu ? "" : " hidden");
 
     return (
-        <>
-            <button onClick={openMenu}>
+        <div>
+            <button className='navButton' onClick={openMenu}>
+                <i class="fa-solid fa-bars"></i>
                 <i className="fas fa-user-circle" />
             </button>
             <ul className={ulClassName} ref={ulRef}>
@@ -48,7 +50,7 @@ const ulClassName = "profile-dropdown" + (showMenu ? "" : " hidden");
                     <button onClick={logout}>Log Out</button>
                 </li>
             </ul>
-        </>
+        </div>
     );
 }
 

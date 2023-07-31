@@ -1,3 +1,31 @@
 .hidden {
     display: none
 }
+
+.navButton {
+    background: transparent;
+    cursor: pointer;
+    margin: 0;
+    text-align: inherit;
+    background-color: white;
+    border: 1px dotted green;
+    border-radius: 21px;
+    transition: box-shadow 0.2s var(--itr-yy-z);
+    height: 42px
+}
+
+.nav-bar-container{
+    display: flex;
+    justify-content: space-between;
+    border: 1px solid yellow;
+    align-items: center;
+}
+
+.nav-links{
+    display: flex;
+    list-style: none;
+}
+
+nav{
+    width: 100%;
+}
