@@ -1,7 +1,8 @@
 import { useDispatch, useSelector } from 'react-redux'
 import { useEffect } from 'react'
 import { getSpots } from '../../store/spots'
-import { SpotDetails } from '../SpotDetails'
+import SpotDetails from  '../SpotDetails/index.js'
+
 
 const AllSpots = () => {
     const dispatch = useDispatch()
@@ -13,17 +14,17 @@ const AllSpots = () => {
 
     return (
         <section>
-
-            <div className="">
                 <ul>
                     <h1>All Spots</h1>
+                    <div>
                         {spots.map((spot)=> (
-
-                            <SpotDetails  spot={ spot } key ={spot.id} />
-                            
-                        ))}
+                            <SpotDetails
+                            spot = { spot }
+                            key = { spot.id }
+                            />
+                            ))}
+                        </div>
                 </ul>
-            </div>
         </section>
     )
 }

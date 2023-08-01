@@ -1,5 +1,5 @@
 import React from "react";
-
+import { NavLink } from "react-router-dom";
 import { useSelector } from "react-redux";
 import ProfileButton from "./ProfileButton";
 import OpenModalButton from "../OpenModalButton";
@@ -34,16 +34,11 @@ function Navigation({ isLoaded }) {
 
     return (
         <nav className="nav-bar-container">
-
-            <a href='/'>Home</a>
-            <ul className="nav-links">
-                    {/* <NavLink exact to="/">
+            <ul className='nav-links'>
+                    <NavLink exact to="/">
                     Home
-                    </NavLink> */}
-
-
+                    </NavLink>
                     {isLoaded && sessionLinks}
-
             </ul>
         </nav>
     );

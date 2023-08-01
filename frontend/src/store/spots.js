@@ -1,3 +1,4 @@
+import { csrfFetch } from "./csrf";
 
 export const LOAD_SPOTS = 'spots/LOAD_SPOTS';
 export const READ_SPOT = 'spots/READ_SPOT';
@@ -25,26 +26,24 @@ export const removeSpot = (spotId) => ({
 })
 
 export const getSpots =  () => async (dispatch, getState) =>{
-    const res = await fetch('/api/spots/')
+    const res = await csrfFetch('/api/spots')
 
     if(res.ok){
         const spots = await res.json()
-        console.log(spots)
+
         dispatch(loadSpots(spots))
     }else{
         const errors = await res.json()
         console.log(errors)
-
     }
 
 }
 
 export const getSingleSpot = (spotId) => async (dispatch, getState ) => {
-    const res = await fetch(`/api/spots/${spotId}`);
+    const res = await csrfFetch(`/api/spots/${spotId}`);
 
     if(res.ok){
         const spotInfo = await res.json()
-        console.log(spotInfo)
         dispatch(readSpot(spotInfo))
     }else{
         const errors = await res.json()
@@ -53,10 +52,9 @@ export const getSingleSpot = (spotId) => async (dispatch, getState ) => {
 }
 
 
-const initialState = { allSpots: {}, singleSpot:{}}
-export default function spotReducer( state = initialState , action){
+const initialState = { allSpots: {}, singleSpot:{} }
 
-    // console.log(action.spots)
+export default function spotReducer( state = initialState , action){
     switch(action.type){
         case LOAD_SPOTS:
             const newState = { ...state };
@@ -66,6 +64,12 @@ export default function spotReducer( state = initialState , action){
             return newState
         case READ_SPOT:
             return { ...state, [action.payload.Spots.spot.id]: action.spot}
+        case UPDATE_SPOT:
+            return { ...state, [action.payload.Spots.spot.id]: action.spot}
+        case REMOVE_SPOT:
+            const  spotState = { ...state };
+            delete spotState[action.spotId]
+            return spotState
         default:
             return state
     }

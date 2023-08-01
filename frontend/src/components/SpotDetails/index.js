@@ -1,16 +1,25 @@
-import { useDispatch } from "react-redux"
-import { Link } from 'react-router-dom'
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux"
+import { useParams } from 'react-router-dom'
+import { getSingleSpot } from "../../store/spots";
 
-export default function SpotDetails({spot}){
-    const dispatch = useDispatch()
+const SpotDetails = () =>{
+    const dispatch = useDispatch();
+    const { spotId } = useParams();
+    const spot = useSelector((state) => state.spots ? state.spots[spotId] : null)
 
+    useEffect(()=> {
+        dispatch(getSingleSpot(spotId))
+    },[dispatch, spotId])
 
     return (
-        <li>
-            <div className="">
-                <h1>Spot Details</h1>
-                <Link to={`/spots/${spot.id}`}>Spot #{spot.id}</Link>
+    <li>
+            <div>
+            <img src={spot.previewImage} alt={`${spot.name}`}></img>
             </div>
-        </li>
+    </li>
+
     )
 }
+
+export default SpotDetails
