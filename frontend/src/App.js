@@ -3,7 +3,7 @@ import { Switch, Route } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import * as sessionActions from "./store/session";
 import Navigation from "./components/Navigation";
-
+import { getSpots } from "./store/spots";
 function App() {
   const dispatch = useDispatch();
   const [isLoaded, setIsLoaded] = useState(false);
@@ -11,24 +11,28 @@ function App() {
     dispatch(sessionActions.restoreUser()).then(() => setIsLoaded(true));
   }, [dispatch]);
 
+  useEffect(() => {
+    dispatch(getSpots())
+}, [dispatch])
+
   return (
     <>
       <Navigation isLoaded={isLoaded} />
       {isLoaded &&
       <Switch>
-        <Route>
+        <Route path="/">
 
         </Route>
-        <Route>
+        <Route path="/spots/new">
 
         </Route>
-        <Route>
+        <Route >
 
         </Route>
-        <Route>
+        <Route >
 
         </Route>
-          <h1>Error invalid Route</h1>
+
       </Switch>
       }
     </>
