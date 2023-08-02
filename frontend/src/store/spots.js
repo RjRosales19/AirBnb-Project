@@ -1,13 +1,16 @@
 import { csrfFetch } from "./csrf";
 
+// Action Type Const
 export const LOAD_SPOTS = 'spots/LOAD_SPOTS';
 export const READ_SPOT = 'spots/READ_SPOT';
 export const UPDATE_SPOT = 'spots/UPDATE_SPOT';
 export const REMOVE_SPOT = 'spots/DELETE_SPOT';
 
+
+// action creator
 export const loadSpots = (spots) => ({
     type: LOAD_SPOTS,
-    payload: spots
+    spots
 })
 
 export const readSpot = (spot) => ({
@@ -25,13 +28,14 @@ export const removeSpot = (spotId) => ({
     payload: spotId
 })
 
+// thunk action creator
 export const getSpots =  () => async (dispatch, getState) =>{
     const res = await csrfFetch('/api/spots')
 
     if(res.ok){
         const spots = await res.json()
-
-        dispatch(loadSpots(spots))
+        const allSpots = spots.Spots
+        dispatch(loadSpots(allSpots))
     }else{
         const errors = await res.json()
         console.log(errors)
@@ -39,33 +43,48 @@ export const getSpots =  () => async (dispatch, getState) =>{
 
 }
 
-export const getSingleSpot = (spotId) => async (dispatch, getState ) => {
+export const getSingleSpot = (spotId) => async ( dispatch, getState ) => {
     const res = await csrfFetch(`/api/spots/${spotId}`);
 
     if(res.ok){
         const spotInfo = await res.json()
+        console.log(spotInfo)
         dispatch(readSpot(spotInfo))
+        return spotInfo
     }else{
         const errors = await res.json()
         console.log(errors)
+    }
+}
+
+export const createSpot = (spot) => async ( dispatch, getState ) => {
+    const res = await csrfFetch(`/api/spots`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json'},
+        body: JSON.stringify(spot),
+    })
+
+    if(res.ok){
+        const newSpot = await res.json();
+        dispatch(readSpot(newSpot));
+        return newSpot
     }
 }
 
 
 const initialState = { allSpots: {}, singleSpot:{} }
-
+// spot reducer
 export default function spotReducer( state = initialState , action){
+    let newState;
     switch(action.type){
         case LOAD_SPOTS:
-            const newState = { ...state };
-            action.payload.Spots.forEach((spot) => {
-                newState.allSpots[spot.id] = spot
-            })
+            newState = { ...state, allSpots: {} };
+            newState.allSpots = action.spots
             return newState
         case READ_SPOT:
-            return { ...state, [action.payload.Spots.spot.id]: action.spot}
-        case UPDATE_SPOT:
-            return { ...state, [action.payload.Spots.spot.id]: action.spot}
+            newState = { ...state, singleSpot: {}}
+            newState.singleSpot = action.spot
+            return newState
         case REMOVE_SPOT:
             const  spotState = { ...state };
             delete spotState[action.spotId]
