@@ -12,7 +12,7 @@ const SpotDetails = () =>{
         dispatch(getSingleSpot(spotId))
     },[dispatch, spotId])
 
-    if(!spot.id ) return null
+    if(!spot.id || !spot.Owner) return null
 
     return (
     <div>
@@ -20,13 +20,17 @@ const SpotDetails = () =>{
 
         </section>
         <div>
-            <img src={spot.previewImage} alt={`${spot.name}`}></img>
-            <h1>{spot.name}</h1>
+            <h2>{spot.name}</h2>
             <p> {spot.city}, {spot.state}, {spot.country}</p>
         </div>
-        <section>
+        <div>
+            <div>
+            <img src={spot.previewImage} alt={`${spot.name}`}></img>
+            </div>
+            <div>
 
-        </section>
+            </div>
+        </div>
             <div>Hosted by {spot.Owner.firstName} {spot.Owner.lastName}</div>
             <h2>{spot.description}</h2>
             <section>
@@ -34,7 +38,9 @@ const SpotDetails = () =>{
                 <h2>{spot.numReviews}</h2>
                 <h2>{spot.avgStarRating}</h2>
             </section>
-
+        <section>
+            <div>REVIEWS INFORMATION</div>
+        </section>
     </div>
 
     )

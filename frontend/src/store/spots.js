@@ -28,21 +28,28 @@ export const removeSpot = (spotId) => ({
     payload: spotId
 })
 
-// thunk action creator
+// thunk action creator get All SPOTS
 export const getSpots =  () => async (dispatch, getState) =>{
     const res = await csrfFetch('/api/spots')
 
     if(res.ok){
         const spots = await res.json()
         const allSpots = spots.Spots
-        dispatch(loadSpots(allSpots))
+        dispatch(loadSpots(normalizedData(allSpots)))
     }else{
         const errors = await res.json()
         console.log(errors)
     }
 
+    function normalizedData(arr){
+        const normalObj = {};
+        arr.forEach( obj => normalObj[obj.id] = obj);
+        return normalObj
+    }
+
 }
 
+// thunk action creator for get single spot
 export const getSingleSpot = (spotId) => async ( dispatch, getState ) => {
     const res = await csrfFetch(`/api/spots/${spotId}`);
 
@@ -57,6 +64,7 @@ export const getSingleSpot = (spotId) => async ( dispatch, getState ) => {
     }
 }
 
+// thunk action creator for create spot
 export const createSpot = (spot) => async ( dispatch, getState ) => {
     const res = await csrfFetch(`/api/spots`, {
         method: 'POST',
@@ -68,6 +76,9 @@ export const createSpot = (spot) => async ( dispatch, getState ) => {
         const newSpot = await res.json();
         dispatch(readSpot(newSpot));
         return newSpot
+    }else{
+        const errors = await res.json()
+        console.log(errors)
     }
 }
 
@@ -89,6 +100,10 @@ export default function spotReducer( state = initialState , action){
             const  spotState = { ...state };
             delete spotState[action.spotId]
             return spotState
+        case UPDATE_SPOT:
+            newState = { ...state, allSpots: {...state.allSpots}}
+            newState.allSpots[action.spot.id] = action.spot
+            return newState
         default:
             return state
     }

@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { useDispatch } from 'react-redux';
 import * as sessionActions from '../../store/session';
 import "./Navigation.css";
+import { NavLink } from "react-router-dom";
 
 
 function ProfileButton({ user }) {
@@ -33,11 +34,19 @@ function ProfileButton({ user }) {
     dispatch(sessionActions.logout());
     };
 
+    const manageSpots = (e) => {
+        e.preventDefault();
+        dispatch()
+    }
+
 
 const ulClassName = "profile-dropdown" + (showMenu ? "" : " hidden");
 
     return (
         <div>
+            <NavLink exact to="/spots/new">
+                <button className='createNewSpot'> Create a New Spot </button>
+            </NavLink>
             <button className='navButton' onClick={openMenu}>
                 <i class="fa-solid fa-bars"></i>
                 <i className="fas fa-user-circle" />
@@ -46,6 +55,9 @@ const ulClassName = "profile-dropdown" + (showMenu ? "" : " hidden");
                 <li>{user.username}</li>
                 <li>{user.firstName} {user.lastName}</li>
                 <li>{user.email}</li>
+                <li>
+                    <button onClick={manageSpots}> Manage Spots</button>
+                </li>
                 <li>
                     <button onClick={logout}>Log Out</button>
                 </li>

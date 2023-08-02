@@ -35,6 +35,10 @@ function App() {
         <Route path="/spots/:spotId/edit">
 
         </Route >
+        <Route path="/spots/current">
+          
+
+        </Route >
 
       </Switch>
       }

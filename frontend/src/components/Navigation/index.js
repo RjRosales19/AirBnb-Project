@@ -33,14 +33,14 @@ function Navigation({ isLoaded }) {
     }
 
     return (
-        <nav className="nav-bar-container">
-            <ul className='nav-links'>
+            <nav className="nav-bar-container">
                     <NavLink exact to="/">
-                    Home
+                    AirBeeNBee
                     </NavLink>
+                <ul className='nav-links'>
                     {isLoaded && sessionLinks}
-            </ul>
-        </nav>
+                </ul>
+            </nav>
     );
 }
 

@@ -3,6 +3,7 @@ import { useEffect } from 'react'
 import { getSpots } from '../../store/spots'
 import { Link } from 'react-router-dom'
 import React from 'react'
+import "./AllSpots.css"
 
 const AllSpots = () => {
     const dispatch = useDispatch()
@@ -19,14 +20,16 @@ const AllSpots = () => {
         <section>
                 <ul>
                     <h1>All Spots</h1>
-                    <div>
+                    <div className='grid-container'>
                         {spots.map(({ id, previewImage, city, state, price, name }) => (
-                            <div key = { id }>
+                            <div className='grid-item' key = { id }>
                                 <Link to={`/spots/${id}`}>
                                     <ul>
                                         <img src={previewImage} alt={`${name}`}></img>
-                                        <div>{city}, {state}</div>
-                                        <div>{price}</div>
+                                        <span className='spot-info'>
+                                            <div>{city}, {state}</div>
+                                            <div>{price}</div>
+                                        </span>
                                     </ul>
                                 </Link>
                             </div>
