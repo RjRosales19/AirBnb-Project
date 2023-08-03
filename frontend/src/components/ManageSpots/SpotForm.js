@@ -33,10 +33,33 @@ const SpotForm = ({ spot, formType }) => {
             lng,
             name,
             description,
-            price
+            price,
+
         }
+        const newSpotImage = [
+            {
+                url: previewImage,
+                preview: true
+            },
+            {
+                url: imageUrl2,
+                preview: false
+            },
+            {
+                url: imageUrl3,
+                preview: false
+            },
+            {
+                url: imageUrl4,
+                preview: false
+            },
+            {
+                url:imageUrl5,
+                preview: false
+            }
+        ]
         if(formType === 'Create Spot'){
-            const newlyCreatedSpot = await dispatch(createSpot(spot))
+            const newlyCreatedSpot = await dispatch(createSpot(spot, newSpotImage))
             spot = newlyCreatedSpot
         }
         if(spot.errors){

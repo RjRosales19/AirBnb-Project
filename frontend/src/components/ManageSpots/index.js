@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getSpots } from "../../store/spots";
 // import SpotDetails from "../SpotDetails";
 import { useEffect } from "react";
-import { Link, useHistory } from "react-router-dom";
+import { NavLink ,Link, useHistory } from "react-router-dom";
 import './ManageSpots.css'
 import OpenModalButton from "../OpenModalButton";
 import DeleteSpotModal from "./DeleteSpotModal";
@@ -13,7 +13,7 @@ const ManageSpots = () => {
     const user = useSelector(state => state.session.user)
     const currUserSpots = spots.filter( spot => spot.ownerId === user.id)
     const history = useHistory()
-    
+
     useEffect(() => {
         dispatch(getSpots())
     }, [dispatch])
@@ -24,7 +24,9 @@ const ManageSpots = () => {
     return (
         <div>
             <h1>Manage Your Spots</h1>
-            <button>Create a New Spot</button>
+            <NavLink exact to="/spots/new">
+                <button className='createNewSpot'> Create a New Spot </button>
+            </NavLink>
             <div className="user-grid-container">
             {currUserSpots.map(({ id, previewImage, city, state, price, name }) => (
                 <div className='user-grid-item' key = { id }>

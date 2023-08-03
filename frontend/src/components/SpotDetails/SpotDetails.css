@@ -1,0 +1,27 @@
+.spotimages-container{
+    display: grid;
+
+
+    justify-content: flex-start;
+
+    border: dashed blue;
+    grid-template-columns: 1fr 1fr;
+}
+
+.largeImg{
+    border: dashed red;
+    width: 500px;
+    height: 350px;
+    margin: 5px;
+}
+
+.smallImg{
+    border: dashed pink;
+    width: 250px;
+    height: 175px;
+    margin: 5px;
+}
+.spotimages-container img{
+    width: 100%;
+    height: 100%;
+}
