@@ -34,10 +34,10 @@ function ProfileButton({ user }) {
     dispatch(sessionActions.logout());
     };
 
-    const manageSpots = (e) => {
-        e.preventDefault();
-        dispatch()
-    }
+    // const manageSpots = (e) => {
+    //     e.preventDefault();
+    //     dispatch()
+    // }
 
 
 const ulClassName = "profile-dropdown" + (showMenu ? "" : " hidden");
@@ -56,7 +56,10 @@ const ulClassName = "profile-dropdown" + (showMenu ? "" : " hidden");
                 <li>{user.firstName} {user.lastName}</li>
                 <li>{user.email}</li>
                 <li>
-                    <button onClick={manageSpots}> Manage Spots</button>
+                <NavLink exact to="/spots/current">
+                    Manage Spots
+                </NavLink>
+
                 </li>
                 <li>
                     <button onClick={logout}>Log Out</button>

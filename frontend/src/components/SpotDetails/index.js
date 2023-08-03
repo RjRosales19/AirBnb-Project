@@ -16,9 +16,6 @@ const SpotDetails = () =>{
 
     return (
     <div>
-        <section>
-
-        </section>
         <div>
             <h2>{spot.name}</h2>
             <p> {spot.city}, {spot.state}, {spot.country}</p>
@@ -31,13 +28,15 @@ const SpotDetails = () =>{
 
             </div>
         </div>
-            <div>Hosted by {spot.Owner.firstName} {spot.Owner.lastName}</div>
-            <h2>{spot.description}</h2>
-            <section>
-                <h2>{spot.price}</h2>
-                <h2>{spot.numReviews}</h2>
-                <h2>{spot.avgStarRating}</h2>
-            </section>
+        <div>
+            <h2>Hosted by {spot.Owner.firstName} {spot.Owner.lastName}</h2>
+            <h3>{spot.description}</h3>
+        </div>
+            <div>
+                <h2>${spot.price} night</h2>
+                <p>{spot.numReviews}</p>
+                <p>{spot.avgStarRating}</p>
+            </div>
         <section>
             <div>REVIEWS INFORMATION</div>
         </section>

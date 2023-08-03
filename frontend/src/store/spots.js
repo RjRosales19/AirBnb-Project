@@ -1,3 +1,4 @@
+
 import { csrfFetch } from "./csrf";
 
 // Action Type Const
@@ -20,12 +21,12 @@ export const readSpot = (spot) => ({
 
 export const updateSpot = (spot) => ({
     type: UPDATE_SPOT,
-    payload: spot
+    spot
 })
 
 export const removeSpot = (spotId) => ({
     type: REMOVE_SPOT,
-    payload: spotId
+    spotId
 })
 
 // thunk action creator get All SPOTS
@@ -82,7 +83,37 @@ export const createSpot = (spot) => async ( dispatch, getState ) => {
     }
 }
 
+// thunk action creator for delete spot
+export const deleteSpot = (spotId) => async ( dispatch, getState ) => {
+    const res = await csrfFetch(`/api/spots/${spotId}`, {
+        method: 'DELETE',
+    })
+    if(res.ok) {
+        dispatch(removeSpot(spotId));
+    }else{
+        const errors = await res.json();
+        return errors
+    }
+}
 
+//thunk action creator for edit spot
+export const editSpot = (spot, spotId) => async ( dispatch, getState) => {
+    console.log(spot, spot.id)
+    const res = await csrfFetch(`/api/spots/${spotId}`, {
+        method:'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(spot)
+    });
+
+    if(res.ok){
+        const editedSpot = await res.json();
+        dispatch(updateSpot(editedSpot))
+        return editedSpot
+    }else{
+        const errors = await res.json();
+        return errors
+    }
+}
 const initialState = { allSpots: {}, singleSpot:{} }
 // spot reducer
 export default function spotReducer( state = initialState , action){
@@ -97,9 +128,9 @@ export default function spotReducer( state = initialState , action){
             newState.singleSpot = action.spot
             return newState
         case REMOVE_SPOT:
-            const  spotState = { ...state };
-            delete spotState[action.spotId]
-            return spotState
+            newState = { ...state, allSpots: {...state.allSpots}}
+            delete newState[action.spotId]
+            return newState
         case UPDATE_SPOT:
             newState = { ...state, allSpots: {...state.allSpots}}
             newState.allSpots[action.spot.id] = action.spot

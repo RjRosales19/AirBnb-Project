@@ -14,7 +14,7 @@ const AllSpots = () => {
         dispatch(getSpots())
     }, [dispatch])
 
-    if(!spots) return null
+    if(!spots.length) return null
 
     return (
         <section>
