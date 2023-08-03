@@ -31,6 +31,30 @@ module.exports = {
       price: 35
     },
     {
+      ownerId:1,
+      address: '222 New Road',
+      city:'Salt Lake City',
+      state:'Utah',
+      country:'United States of America',
+      lat: 30.1295691,
+      lng: -114.1231299,
+      name: 'App World',
+      description: 'Enjoy everything app',
+      price: 35
+    },
+    {
+      ownerId:1,
+      address: '333 Side Road',
+      city:'Kansas City',
+      state:'Kansas',
+      country:'United States of America',
+      lat: 46.1295691,
+      lng: -120.1231299,
+      name: 'Korean BBQ',
+      description: 'Place to enjoy KBBQ',
+      price: 35
+    },
+    {
       ownerId:2,
       address: '777 Selasor Road',
       city:'Baltimore',
@@ -38,6 +62,30 @@ module.exports = {
       country:'United States of America',
       lat: 70.5126591,
       lng: -200.3411299,
+      name: 'Eternal',
+      description: 'Place you can meditate in peace',
+      price: 10
+    },
+    {
+      ownerId:2,
+      address: '888 Rain Road',
+      city:'Bel Air',
+      state:'Maryland',
+      country:'United States of America',
+      lat: 70.5126591,
+      lng: -205.3311299,
+      name: 'Eternal',
+      description: 'Place you can meditate in peace',
+      price: 10
+    },
+    {
+      ownerId:2,
+      address: '333 Selasor Court',
+      city:'Baltimore',
+      state:'Maryland',
+      country:'United States of America',
+      lat: 70.5126591,
+      lng: -203.3411299,
       name: 'Eternal',
       description: 'Place you can meditate in peace',
       price: 10
@@ -54,20 +102,46 @@ module.exports = {
       description: 'Place to enjoy the beach',
       price: 20
     },
-    // {
-    //   ownerId:4,
-    //   address: '132 Green Road',
-    //   city:'Boston',
-    //   state:'Vermont',
-    //   country:'United States of America',
-    //   lat: 32.6183191,
-    //   lng: -100.1123134,
-    //   name: 'Eternal Mountain',
-    //   description: 'Place to enjoy the snowy weather',
-    //   price: 100,
-    //   avgRating: 2.5,
-    //   previewImage: 'image url',
-    // }
+    {
+      ownerId:3,
+      address: '1203 Kyle Road',
+      city:'Orlando',
+      state:'Florida',
+      country:'United States of America',
+      lat: 40.6183191,
+      lng: -125.1123134,
+      name: 'Sun Beach',
+      description: 'Place to enjoy the beach',
+      price: 20
+    },
+    {
+      ownerId:4,
+      address: '132 Green Road',
+      city:'Boston',
+      state:'Vermont',
+      country:'United States of America',
+      lat: 32.6183191,
+      lng: -100.1123134,
+      name: 'Eternal Mountain',
+      description: 'Place to enjoy the snowy weather',
+      price: 100,
+      avgRating: 2.5,
+      previewImage: 'image url',
+    },
+    {
+      ownerId:4,
+      address: '132 Green Road',
+      city:'Boston',
+      state:'Vermont',
+      country:'United States of America',
+      lat: 32.6183191,
+      lng: -100.1123134,
+      name: 'Eternal Mountain',
+      description: 'Place to enjoy the snowy weather',
+      price: 100,
+      avgRating: 2.5,
+      previewImage: 'image url',
+    }
   ])
 },
 
