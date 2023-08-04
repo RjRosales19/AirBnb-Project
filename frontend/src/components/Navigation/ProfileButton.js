@@ -45,26 +45,24 @@ const ulClassName = "profile-dropdown" + (showMenu ? "" : " hidden");
     return (
         <div>
             <NavLink exact to="/spots/new">
-                <button className='createNewSpot'> Create a New Spot </button>
+                <button className='create-new-spot-button'> Create a New Spot </button>
             </NavLink>
             <button className='navButton' onClick={openMenu}>
                 <i className="fas fa-bars"/>
                 <i className="fas fa-user-circle"/>
             </button>
-            <ul className={ulClassName} ref={ulRef}>
-                <li>{user.username}</li>
-                <li>{user.firstName} {user.lastName}</li>
-                <li>{user.email}</li>
-                <li>
-                <NavLink exact to="/spots/current">
-                    Manage Spots
-                </NavLink>
-
-                </li>
-                <li>
-                    <button onClick={logout}>Log Out</button>
-                </li>
-            </ul>
+            <div className={ulClassName} ref={ulRef}>
+                <div className="nav-info">
+                    <div>Hello, {user.firstName}</div>
+                    <div>{user.email}</div>
+                    <div>
+                    <NavLink className="manage-spots-link"exact to="/spots/current">
+                        Manage Spots
+                    </NavLink>
+                    </div>
+                    <button className="log-out-button"onClick={logout}>Log Out</button>
+                </div>
+            </div>
         </div>
     );
 }

@@ -2,7 +2,7 @@ import { useDispatch } from "react-redux"
 import { useModal } from "../../context/Modal"
 import { deleteReview } from "../../store/reviews"
 // import { useParams } from "react-router-dom";
-
+import "./DeleteReviewModal.css"
 const DeleteReviewModal = ({reviewId, spotId}) => {
     const dispatch = useDispatch();
     const {closeModal} = useModal();
@@ -18,14 +18,12 @@ const DeleteReviewModal = ({reviewId, spotId}) => {
     }
 
     return (
-        <div>
-        <h3>Confirm Delete</h3>
-        <h2>Are you sure you want to delete this review?</h2>
-        <div>
-            <button onClick={handleDelete}>Yes (Delete Review)</button>
-            <button onClick={keepReview}>No (Keep Review)</button>
+        <div className="delete-review-container">
+            <h2>Confirm Delete</h2>
+            <h3>Are you sure you want to delete this review?</h3>
+            <button className="delete-review-button" onClick={handleDelete}>Yes (Delete Review)</button>
+            <button className="keep-review-button" onClick={keepReview}>No (Keep Review)</button>
         </div>
-    </div>
     )
 }
 

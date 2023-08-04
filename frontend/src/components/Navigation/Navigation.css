@@ -3,12 +3,16 @@
 }
 
 .navButton {
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-evenly;
     background: transparent;
     cursor: pointer;
     margin: 0;
     text-align: inherit;
     background-color: white;
     border-radius: 21px;
+    width: 70px;
     height: 42px
 }
 
@@ -41,4 +45,42 @@ nav{
 .profile-dropdown{
     position: absolute;
     z-index: 1;
+    border: 2px solid;
+    padding: 10px 30px;
+    background-color: white;
+}
+
+
+.create-new-spot-button{
+    border: none;
+    color: teal;
+    background-color: white;
+}
+
+.fa-user-circle:before{
+    font-size:20px;
+}
+
+.fa-bars:before{
+    font-size:20px;
+}
+
+.manage-spots-link{
+    text-decoration: none;
+    color:black;
+    border-top: 2px solid;
+    border-bottom: 2px solid;
+    padding: 5px 0px;
+}
+
+.log-out-button{
+    background-color:  rgb(169,169,169);
+    border-radius: 20px;
+    color: white;
+    padding: 8px;
+}
+
+.nav-info{
+    display: grid;
+    row-gap: 10px;
 }

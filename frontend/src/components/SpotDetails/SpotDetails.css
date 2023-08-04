@@ -13,11 +13,7 @@
     margin: 5px;
 }
 
-img{
-    border-radius: 25px;
-}
 .smallImg-container{
-    display: grid;
     border: dashed pink;
     width: 250px;
     height: 175px;
@@ -28,4 +24,5 @@ img{
 .spotimages-container img{
     width: 100%;
     height: 100%;
+    border-radius: 25px;
 }

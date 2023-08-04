@@ -2,6 +2,7 @@ import { useDispatch } from "react-redux";
 import { useState } from "react";
 import { createSpot } from "../../store/spots";
 import { useHistory } from "react-router-dom";
+import "./SpotForm.css"
 const SpotForm = ({ spot, formType }) => {
     const dispatch = useDispatch();
     const history = useHistory()
@@ -69,9 +70,13 @@ const SpotForm = ({ spot, formType }) => {
         }
     };
     return (
-        <form onSubmit={handleSubmit}>
+        <div className="create-spot-container">
+
+        <form className="create-spot-form" onSubmit={handleSubmit}>
 
             <h1>Create a New Spot</h1>
+
+            <section>
             <h2>Where's your place located?</h2>
             <h3>Guests will only get your exact address once they booked a reservation</h3>
             <div className="errors">{errors.country}</div>
@@ -139,19 +144,24 @@ const SpotForm = ({ spot, formType }) => {
                 onChange={(e) => setLng(e.target.value)}
                 />
             </label>
+        </section>
+
+        <section>
 
             <h2>Describe your place to guests</h2>
             <h3>Mention the best features of your space, any special amentities like fast wifi or parking, and what you love about the neighborhood.</h3>
             <div className="errors">{errors.description}</div>
             <label>
                 Description:
-                <input
-                placeholder="Description"
+                <textarea
+                placeholder="Please write at least 30 characters"
                 type="text"
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
                 />
             </label>
+        </section>
+        <section>
 
             <h2>Create a title for your spot</h2>
             <h3>Catch guests' attention with a spot title that highlights what makes your place special.</h3>
@@ -159,13 +169,14 @@ const SpotForm = ({ spot, formType }) => {
             <label>
                 Name:
                 <input
-
-                type="text"
-                placeholder="Name of your spot"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                />
+                    type="text"
+                    placeholder="Name of your spot"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    />
             </label>
+        </section>
+        <section>
 
             <h2>Set a base price for your spot</h2>
             <h3>Competitive pricing can help your listing stand out and rank higher in search results.</h3>
@@ -179,6 +190,8 @@ const SpotForm = ({ spot, formType }) => {
                 onChange={(e) => setPrice(e.target.value)}
                 />
             </label>
+        </section>
+        <section>
 
             <h2>Liven up your spot with photos</h2>
             <h3>Submit a link to at least one photo to publish your spot</h3>
@@ -236,11 +249,13 @@ const SpotForm = ({ spot, formType }) => {
                 onChange={(e) => setImageUrl5(e.target.value)}
                 />
             </label>
+        </section>
             <div>
 
             <button type="submit">{formType}</button>
             </div>
         </form>
+    </div>
     )
 }
 

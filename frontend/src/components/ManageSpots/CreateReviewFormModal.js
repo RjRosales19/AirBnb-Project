@@ -30,6 +30,7 @@ const CreateReviewFormModal = ({spot}) => {
 
             <h2>How was your stay?</h2>
             <textarea
+            className="review-form-textarea"
             placeholder="Leave your review here..."
             value={review}
             type={"text"}
@@ -82,11 +83,11 @@ const CreateReviewFormModal = ({spot}) => {
                 <i className="fa fa-star"></i>
             </div>
 
-
-                </div>
+            Stars
+            </div>
 
             </div>
-            <button onClick={handleSubmit}>Submit Your Review</button>
+            <button className="submit-review-button" onClick={handleSubmit}>Submit Your Review</button>
                 </div>
         </form>
     )

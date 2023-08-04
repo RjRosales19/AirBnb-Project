@@ -56,7 +56,7 @@ export const createReview = (review, spotId) => async (dispatch, getState) => {
     }
 }
 //thunk action creator for deleting a review for a spot
-export const deleteReview = (reviewId, spotId) => async ( dispatch, getState ) => {
+export const deleteReview = (reviewId) => async ( dispatch, getState ) => {
     const res = await csrfFetch(`/api/reviews/${reviewId}`, {
         method: 'DELETE',
     })

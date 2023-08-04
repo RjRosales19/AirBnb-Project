@@ -2,17 +2,32 @@
     display:flex;
     flex-direction: column;
     align-items: center;
-    align-content: space-between;
+    margin: 30px;
+    row-gap: 20px;
 }
 .stars-container{
     display: flex;
 }
 .stars-input{
     display: flex;
+    font-size: 20px;
 }
 .filled{
     color: black
 }
 .empty{
-    color:white
+    color: rgb(219, 205, 205)
+}
+
+.submit-review-button{
+    padding: 10px;
+    background-color: rgb(233, 71, 22);
+    color: white;
+    width: 325px;
+
+}
+
+.review-form-textarea{
+    padding: 50px 80px;
+
 }
