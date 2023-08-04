@@ -3,11 +3,11 @@ import { useModal } from "../../context/Modal"
 import { useState } from "react"
 import { useDispatch } from "react-redux"
 import "./CreateReviewFormModal.css"
-import { useParams } from "react-router-dom"
 
-const CreateReviewFormModal = () => {
+
+const CreateReviewFormModal = ({spot}) => {
     const dispatch = useDispatch()
-    const { spotId } = useParams()
+
     const [ review, setReview ] = useState("")
     const [ stars, setStars ] = useState(0)
     const { closeModal } = useModal()
@@ -20,7 +20,7 @@ const CreateReviewFormModal = () => {
             review,
             stars
         }
-        await dispatch(createReview(newReview, spotId))
+        await dispatch(createReview(newReview, spot.id))
 
         .then(closeModal)
     }

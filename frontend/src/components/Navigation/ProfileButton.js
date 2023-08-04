@@ -48,8 +48,8 @@ const ulClassName = "profile-dropdown" + (showMenu ? "" : " hidden");
                 <button className='createNewSpot'> Create a New Spot </button>
             </NavLink>
             <button className='navButton' onClick={openMenu}>
-                <i class="fa-solid fa-bars"></i>
-                <i className="fas fa-user-circle" />
+                <i className="fas fa-bars"/>
+                <i className="fas fa-user-circle"/>
             </button>
             <ul className={ulClassName} ref={ulRef}>
                 <li>{user.username}</li>

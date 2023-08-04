@@ -34,12 +34,10 @@ const SpotDetails = () =>{
             <p> {spot.city}, {spot.state}, {spot.country}</p>
         </div>
         <div className='spotimages-container'>
-            <div className='largeImg'>
+            <div className='largeImg-container'>
             <img src={spot.SpotImages[0].url} alt={`${spot.name}`}></img>
             </div>
-            <div className='smallImg'>
-                {allSpotImages.map(image => <img key={image.id} src={image.url} alt={spot.name}></img>)}
-            </div>
+                    {allSpotImages.map(image =><div className="smallImg-container"> <img key={image.id} src={image.url} alt={spot.name}></img></div>)}
         </div>
         <div>
             <h2>Hosted by {spot.Owner.firstName} {spot.Owner.lastName}</h2>
@@ -52,17 +50,24 @@ const SpotDetails = () =>{
             </div>
         <section>
                     <h2>
-                        <p>{spot.avgStarRating} · {spot.numReviews}</p>
+                        <p><i className="fa fa-star"></i>{spot.avgStarRating} · {spot.numReviews}</p>
                     </h2>
-                    <OpenModalButton modalComponent={<CreateReviewFormModal spot={spotId}/>} buttonText="Post Your Review"/>
+                    <div>
+                        <i className="fa fa-star"></i>
+                        {spot.avgStarRating} · {spot.numReviews}
+                    </div>
+
+                    <OpenModalButton modalComponent={<CreateReviewFormModal spot={spot}/>} buttonText="Post Your Review"/>
             {reviews.map((review) => (
                 <div>
                     <h3>{review.User?.firstName}</h3>
                     <h4>{review.createdAt}</h4>
                     <h4>{review.review}</h4>
+                <div>
+                <OpenModalButton modalComponent={<DeleteReviewModal reviewId={review.id} spotId={spot.id}/>} buttonText="Delete"/>
+                </div>
                 </div>
             ))}
-            <OpenModalButton modalComponent={<DeleteReviewModal spot={spotId}/>} buttonText="Delete"/>
         </section>
     </div>
 

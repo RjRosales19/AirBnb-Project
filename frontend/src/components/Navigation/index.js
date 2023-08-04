@@ -6,7 +6,7 @@ import OpenModalButton from "../OpenModalButton";
 import LoginFormModal from "../LoginFormModal";
 import SignupFormModal from "../SignupFormModal";
 import "./Navigation.css";
-
+// import "/image/Airbnb_logo_PNG3.png"
 function Navigation({ isLoaded }) {
     const sessionUser = useSelector((state) => state.session.user);
 
@@ -19,7 +19,7 @@ function Navigation({ isLoaded }) {
         );
     } else {
         sessionLinks = (
-        <li>
+        <div>
             <OpenModalButton
             buttonText="Log In"
             modalComponent={<LoginFormModal />}
@@ -28,18 +28,20 @@ function Navigation({ isLoaded }) {
             buttonText="Sign Up"
             modalComponent={<SignupFormModal />}
             />
-        </li>
+        </div>
         );
     }
 
     return (
             <nav className="nav-bar-container">
-                    <NavLink exact to="/">
-                    AirBeeNBee
+                    <NavLink className="home" exact to="/">
+                        <img className="AirBnbLogo"
+                    src="../image/Airbnb_logo_PNG3.png" alt="AirBeeNBee"
+                        />
                     </NavLink>
-                <ul className='nav-links'>
+                <div className='nav-links'>
                     {isLoaded && sessionLinks}
-                </ul>
+                </div>
             </nav>
     );
 }

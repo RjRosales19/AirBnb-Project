@@ -8,16 +8,13 @@
     margin: 0;
     text-align: inherit;
     background-color: white;
-    border: 1px dotted green;
     border-radius: 21px;
-    transition: box-shadow 0.2s var(--itr-yy-z);
     height: 42px
 }
 
 .nav-bar-container{
     display: flex;
     justify-content: space-between;
-    border: 1px solid yellow;
     align-items: center;
 }
 
@@ -28,4 +25,20 @@
 
 nav{
     width: 100%;
+}
+
+.home{
+    width: 100px;
+    height: 50px;
+    align-items: center;
+}
+
+.AirBnbLogo{
+    padding-top: 10px;
+    width:100%;
+}
+
+.profile-dropdown{
+    position: absolute;
+    z-index: 1;
 }

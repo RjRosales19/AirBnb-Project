@@ -47,7 +47,8 @@ export const createReview = (review, spotId) => async (dispatch, getState) => {
     })
     if(res.ok){
         const newReview = await res.json();
-        dispatch(readReview(newReview))
+        console.log(newReview)
+        dispatch(loadReviews(spotId))
         return newReview
     }else{
         const error = await res.json()
@@ -60,7 +61,7 @@ export const deleteReview = (reviewId, spotId) => async ( dispatch, getState ) =
         method: 'DELETE',
     })
     if(res.ok){
-        dispatch(removeReview(spotId));
+        dispatch(removeReview(reviewId));
     }else{
         const errors = await res.json()
         return errors

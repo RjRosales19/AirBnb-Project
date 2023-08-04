@@ -56,7 +56,6 @@ export const getSingleSpot = (spotId) => async ( dispatch, getState ) => {
 
     if(res.ok){
         const spotInfo = await res.json()
-        console.log(spotInfo)
         dispatch(readSpot(spotInfo))
         return spotInfo
     }else{

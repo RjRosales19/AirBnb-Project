@@ -24,7 +24,7 @@ function LoginFormModal (){
     };
 
     return (
-    <>
+    <div>
         <h1>Log In</h1>
         <form onSubmit={handleSubmit}>
             <label>
@@ -34,7 +34,7 @@ function LoginFormModal (){
                 value={credential}
                 onChange={(e) => setCredential(e.target.value)}
                 required
-            />
+                />
             </label>
             <label>
                 Password
@@ -43,12 +43,12 @@ function LoginFormModal (){
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
-            />
+                />
             </label>
             {errors && <p style={{color: 'red'}}>{errors.message}</p>}
             <button type="submit">Log In</button>
         </form>
-    </>
+    </div>
     );
 }
 
