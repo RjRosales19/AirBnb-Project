@@ -20,6 +20,8 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    border-bottom: 1px solid;
+    padding-bottom: 15px;
 }
 
 .nav-links{

@@ -25,14 +25,14 @@ const AllSpots = () => {
                             <div className='grid-item' key = { id }>
                                 <Link className="spot-info-link" to={`/spots/${id}`}>
                                     <div className="spot-info-container">
-                                        <img src={previewImage} alt={`${name}`}></img>
+                                        <img src={previewImage} alt={`${name}`} title={name}></img>
                                         <div className='spot-info'>
                                             <div className='location'>{city}, {state}</div>
                                             <div className='price'>${price} night</div>
 
                                             <span className="rating">
                                                 <i className="fa fa-star"></i>
-                                                {avgRating ? avgRating : "New"}
+                                                {avgRating ? avgRating.toFixed(1) : "New"}
                                             </span>
                                         </div>
                                     </div>

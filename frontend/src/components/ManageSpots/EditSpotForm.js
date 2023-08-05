@@ -2,7 +2,7 @@ import { useDispatch } from "react-redux"
 import React, { useState, useEffect } from "react";
 import { editSpot } from "../../store/spots";
 import { useHistory, useParams } from "react-router-dom"
-
+import "./EditSpotForm.css"
 const EditSpotForm = ({spot, formType}) => {
     const {spotId} = useParams()
     const dispatch = useDispatch()
@@ -55,6 +55,8 @@ const EditSpotForm = ({spot, formType}) => {
         }
     }
     return(
+        <div className="edit-spot-form-container">
+
         <form onSubmit={handleSubmit}>
 
             <h1>Update your Spot</h1>
@@ -146,11 +148,11 @@ const EditSpotForm = ({spot, formType}) => {
                 Name:
                 <input
 
-                type="text"
-                placeholder="Name of your spot"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                />
+type="text"
+placeholder="Name of your spot"
+value={name}
+onChange={(e) => setName(e.target.value)}
+/>
             </label>
 
             <h2>Set a base price for your spot</h2>
@@ -177,10 +179,10 @@ const EditSpotForm = ({spot, formType}) => {
                 placeholder="Preview Image URL"
                 onChange={(e) => setPreviewImage(e.target.value)}
                 />
-            </label>
+                </label>
 
-            <div className="errors">{errors.imageUrl2}</div>
-            <label>
+                <div className="errors">{errors.imageUrl2}</div>
+                <label>
                 Image Url:
                 <input
                 type='url'
@@ -188,10 +190,10 @@ const EditSpotForm = ({spot, formType}) => {
                 placeholder="Image URL"
                 onChange={(e) => setImageUrl2(e.target.value)}
                 />
-            </label>
+                </label>
 
-            <div className="errors">{errors.imageUrl3}</div>
-            <label>
+                <div className="errors">{errors.imageUrl3}</div>
+                <label>
                 Image Url:
                 <input
                 type='url'
@@ -199,10 +201,10 @@ const EditSpotForm = ({spot, formType}) => {
                 placeholder="Image URL"
                 onChange={(e) => setImageUrl3(e.target.value)}
                 />
-            </label>
+                </label>
 
-            <div className="errors">{errors.imageUrl4}</div>
-            <label>
+                <div className="errors">{errors.imageUrl4}</div>
+                <label>
                 Image Url:
                 <input
                 type='url'
@@ -210,10 +212,10 @@ const EditSpotForm = ({spot, formType}) => {
                 placeholder="Image URL"
                 onChange={(e) => setImageUrl4(e.target.value)}
                 />
-            </label>
+                </label>
 
-            <div className="errors">{errors.imageUrl5}</div>
-            <label>
+                <div className="errors">{errors.imageUrl5}</div>
+                <label>
                 Image Url:
                 <input
                 type='url'
@@ -227,6 +229,7 @@ const EditSpotForm = ({spot, formType}) => {
             <button type="submit">{formType}</button>
             </div>
         </form>
+    </div>
     )
 }
 

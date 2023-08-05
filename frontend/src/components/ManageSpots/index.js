@@ -28,14 +28,19 @@ const ManageSpots = () => {
                 <button className='createNewSpot'> Create a New Spot </button>
             </NavLink>
             <div className="user-grid-container">
-            {currUserSpots.map(({ id, previewImage, city, state, price, name }) => (
+            {currUserSpots.map(({ id, previewImage, city, state, price, name , avgRating}) => (
                 <div className='user-grid-item' key = { id }>
                     <Link to={`/spots/${id}`}>
                         <ul>
                             <img src={previewImage} alt={`${name}`}></img>
                             <span className='spot-info'>
                                 <div>{city}, {state}</div>
-                                <div>{price}</div>
+                                <div>${price}</div>
+                                <div>
+
+                                <i className="fa fa-star"></i>
+                                {avgRating ? avgRating.toFixed(1) : "New"}
+                                </div>
                             </span>
                         </ul>
                     </Link>

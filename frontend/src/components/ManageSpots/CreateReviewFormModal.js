@@ -1,8 +1,9 @@
 import { createReview } from "../../store/reviews"
 import { useModal } from "../../context/Modal"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useDispatch } from "react-redux"
 import "./CreateReviewFormModal.css"
+import { getSingleSpot } from "../../store/spots"
 
 
 const CreateReviewFormModal = ({spot}) => {
@@ -13,6 +14,7 @@ const CreateReviewFormModal = ({spot}) => {
     const { closeModal } = useModal()
     const [ activeRating, setActiveRating ] = useState(stars)
 
+
     const handleSubmit = async (e) => {
         e.preventDefault()
 
@@ -21,7 +23,7 @@ const CreateReviewFormModal = ({spot}) => {
             stars
         }
         await dispatch(createReview(newReview, spot.id))
-
+        await dispatch(getSingleSpot(spot.id))
         .then(closeModal)
     }
     return(

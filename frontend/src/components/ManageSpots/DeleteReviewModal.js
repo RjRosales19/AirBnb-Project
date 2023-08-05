@@ -1,13 +1,13 @@
 import { useDispatch } from "react-redux"
 import { useModal } from "../../context/Modal"
 import { deleteReview } from "../../store/reviews"
-// import { useParams } from "react-router-dom";
 import "./DeleteReviewModal.css"
+import { useEffect } from "react"
 const DeleteReviewModal = ({reviewId, spotId}) => {
     const dispatch = useDispatch();
     const {closeModal} = useModal();
-    // const { spotId } = useParams
-    const handleDelete = (e) => {
+
+    const handleDelete = async (e) => {
         e.preventDefault();
         dispatch(deleteReview(reviewId, spotId))
         .then(closeModal)

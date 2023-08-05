@@ -7,13 +7,13 @@ import { getSpotReviews } from "../../store/reviews";
 import OpenModalButton from "../OpenModalButton";
 import CreateReviewFormModal from "../ManageSpots/CreateReviewFormModal";
 import DeleteReviewModal from "../ManageSpots/DeleteReviewModal"
+
 const SpotDetails = () =>{
     const dispatch = useDispatch();
     const { spotId } = useParams();
     const spot = useSelector((state) => state.spots.singleSpot)
     const reviews = Object.values(useSelector((state) => state.reviews.singleSpot))
-    // console.log("***************", reviews.map(review => review))
-    // console.log("||||||||||", spot)
+
     useEffect(()=> {
         dispatch(getSingleSpot(spotId))
     },[dispatch, spotId])
@@ -54,7 +54,7 @@ const SpotDetails = () =>{
                     </h2>
                     <div>
                         <i className="fa fa-star"></i>
-                        {spot.avgStarRating} · {spot.numReviews}
+                        {spot.avgStarRating.toFixed(1)} · {spot.numReviews}
                     </div>
 
                     <OpenModalButton modalComponent={<CreateReviewFormModal spot={spot}/>} buttonText="Post Your Review"/>

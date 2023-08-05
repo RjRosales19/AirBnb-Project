@@ -252,8 +252,8 @@ const SpotForm = ({ spot, formType }) => {
         </section>
             <div>
 
-            <button type="submit">{formType}</button>
             </div>
+            <button type="submit">{formType}</button>
         </form>
     </div>
     )

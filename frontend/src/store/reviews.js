@@ -1,5 +1,5 @@
 import { csrfFetch } from "./csrf";
-
+import { getSingleSpot } from "./spots";
 // Action Type Const
 export const LOAD_REVIEWS = 'reviews/LOAD_REVIEWS';
 export const READ_REVIEW = 'reviews/READ_REVIEW';
@@ -18,10 +18,10 @@ export const readReview = (review, spotId) => ({
 
 })
 
-export const removeReview = (reviewId) => ({
-    type: REMOVE_REVIEW,
-    reviewId
-})
+// export const removeReview = (reviewId) => ({
+//     type: REMOVE_REVIEW,
+//     reviewId
+// })
 
 //thunk action creator for get all reviews for a spot
 export const getSpotReviews = (spotId) => async (dispatch, getState) => {
@@ -47,8 +47,7 @@ export const createReview = (review, spotId) => async (dispatch, getState) => {
     })
     if(res.ok){
         const newReview = await res.json();
-        console.log(newReview)
-        dispatch(loadReviews(spotId))
+        dispatch(getSpotReviews(spotId))
         return newReview
     }else{
         const error = await res.json()
@@ -56,12 +55,14 @@ export const createReview = (review, spotId) => async (dispatch, getState) => {
     }
 }
 //thunk action creator for deleting a review for a spot
-export const deleteReview = (reviewId) => async ( dispatch, getState ) => {
+export const deleteReview = (reviewId, spotId) => async ( dispatch, getState ) => {
     const res = await csrfFetch(`/api/reviews/${reviewId}`, {
         method: 'DELETE',
     })
     if(res.ok){
-        dispatch(removeReview(reviewId));
+        // dispatch(removeReview(reviewId))
+        dispatch(getSpotReviews(spotId))
+        dispatch(getSingleSpot(spotId))
     }else{
         const errors = await res.json()
         return errors
@@ -81,10 +82,11 @@ export default function reviewsReducer( state = initialState, action ) {
             newState = { ...state, singleSpot: {}}
             newState.singleSpot = action.review
             return newState
-        case REMOVE_REVIEW:
-            newState = { ...state, singleSpot: {}}
-            delete newState[action.reviewId]
-            return newState
+        // case REMOVE_REVIEW:
+        //     newState = { ...state, singleSpot: {...state} }
+        //     console.log(newState.singleSpot)
+        //     delete newState.singleSpot[action.reviewId]
+        //     return newState
         default:
             return state
     }
