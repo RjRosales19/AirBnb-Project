@@ -30,27 +30,27 @@ const ManageSpots = () => {
             <div className="user-grid-container">
             {currUserSpots.map(({ id, previewImage, city, state, price, name , avgRating}) => (
                 <div className='user-grid-item' key = { id }>
-                    <Link to={`/spots/${id}`}>
-                        <ul>
+                    <Link className="spot-info-link" to={`/spots/${id}`}>
+                        <div className="spot-info-container">
                             <img src={previewImage} alt={`${name}`}></img>
-                            <span className='spot-info'>
-                                <div>{city}, {state}</div>
-                                <div>${price}</div>
-                                <div>
-
-                                <i className="fa fa-star"></i>
-                                {avgRating ? avgRating.toFixed(1) : "New"}
+                            <span>
+                                <div className='location'>
+                                    {city}, {state}
+                                    <div className="manage-spots-rating">
+                                    <i className="fa fa-star"></i>
+                                    {avgRating ? avgRating.toFixed(1) : "New"}
+                                    </div>
                                 </div>
+                                <div className='price'>${price} night</div>
                             </span>
-                        </ul>
+                        </div>
                     </Link>
-                    <div>
+                    <div className="manage-spots-buttons">
                         <button onClick={() => handleEdit(id)}>Update</button>
                         <OpenModalButton modalComponent={<DeleteSpotModal spotId={id}/>} buttonText="Delete"/>
-
-
                     </div>
-                </div>
+
+            </div>
             ))}
             </div>
         </div>

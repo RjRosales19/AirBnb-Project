@@ -32,12 +32,13 @@
 }
 
 .location{
-    grid-column: 1 / 2;
-    grid-row: 1;
+    display: flex;
+    justify-content: space-between;
 }
 .price{
     grid-column: 1 / 2;
-    grid-row: 2
+    grid-row: 2;
+    font-weight: bold;
 }
 
 

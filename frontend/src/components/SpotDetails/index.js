@@ -46,11 +46,11 @@ const SpotDetails = () =>{
             <div>
                 <h2>${spot.price} night</h2>
                 <p>{spot.numReviews}</p>
-                <p>{spot.avgStarRating}</p>
+                <p>{spot.avgStarRating.toFixed(1)}</p>
             </div>
         <section>
                     <h2>
-                        <p><i className="fa fa-star"></i>{spot.avgStarRating} · {spot.numReviews}</p>
+                        <p><i className="fa fa-star"></i>{spot.avgStarRating.toFixed(1)} · {spot.numReviews}</p>
                     </h2>
                     <div>
                         <i className="fa fa-star"></i>

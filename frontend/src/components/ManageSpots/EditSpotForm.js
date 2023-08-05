@@ -1,5 +1,5 @@
 import { useDispatch } from "react-redux"
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { editSpot } from "../../store/spots";
 import { useHistory, useParams } from "react-router-dom"
 import "./EditSpotForm.css"
@@ -23,9 +23,6 @@ const EditSpotForm = ({spot, formType}) => {
     // const [imageUrl5, setImageUrl5] = useState("")
     const [errors, setErrors] = useState({})
 
-    useEffect(() => {
-
-    },[])
 
     if(!spot.id){
         return null
