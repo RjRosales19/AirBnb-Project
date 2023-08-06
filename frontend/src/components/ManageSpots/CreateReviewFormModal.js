@@ -14,6 +14,7 @@ const CreateReviewFormModal = ({spot}) => {
     const { closeModal } = useModal()
     const [ activeRating, setActiveRating ] = useState(stars)
 
+    const disabledSubmit = review.length < 10 || stars < 1
 
     const handleSubmit = async (e) => {
         e.preventDefault()
@@ -89,7 +90,7 @@ const CreateReviewFormModal = ({spot}) => {
             </div>
 
             </div>
-            <button className="submit-review-button" onClick={handleSubmit}>Submit Your Review</button>
+            <button disabled={disabledSubmit}className="submit-review-button" onClick={handleSubmit}>Submit Your Review</button>
                 </div>
         </form>
     )
