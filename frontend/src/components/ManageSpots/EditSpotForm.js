@@ -43,7 +43,6 @@ const EditSpotForm = ({spot, formType}) => {
         if(formType === 'Update Spot'){
             const newlyUpdatedSpot = await dispatch(editSpot(spot, spotId))
             spot = newlyUpdatedSpot
-
         }
         if(spot.errors){
             setErrors(spot.errors)
@@ -54,15 +53,18 @@ const EditSpotForm = ({spot, formType}) => {
     return(
         <div className="edit-spot-form-container">
 
-        <form onSubmit={handleSubmit}>
+        <form className="update-spot-form" onSubmit={handleSubmit}>
 
             <h1>Update your Spot</h1>
-            <h2>Where's your place located?</h2>
-            <h3>Guests will only get your exact address once they booked a reservation</h3>
+
+        <section className="location-container">
+            <h3>Where's your place located?</h3>
+            <h4>Guests will only get your exact address once they booked a reservation</h4>
             <div className="errors">{errors.country}</div>
             <label>
                 Country
                 <input
+                className="country-input"
                 type="text"
                 value={country}
                 placeholder="Country"
@@ -74,6 +76,7 @@ const EditSpotForm = ({spot, formType}) => {
             <label>
                 Street Address
                 <input
+                className="street-address-input"
                 type="text"
                 value={address}
                 placeholder="Address"
@@ -81,83 +84,92 @@ const EditSpotForm = ({spot, formType}) => {
                 />
             </label>
 
+        <div className="city-state-container">
             <div className="errors">{errors.city}</div>
             <label>
                 City
                 <input
+                className="city-input"
                 type="text"
                 placeholder="City"
                 value={city}
                 onChange={(e) => setCity(e.target.value)}
                 />
             </label>
-
+            <span className="comma" > , </span>
             <div className="errors">{errors.state}</div>
             <label>
                 State
                 <input
+                className="state-input"
                 type="text"
                 placeholder="STATE"
                 value={state}
                 onChange={(e) => setState(e.target.value)}
                 />
             </label>
+        </div>
 
+        <div className="lat-long-container">
             <div className="errors">{errors.lat}</div>
             <label>
                 Latitude
                 <input
+                className="latitude-input"
                 type="text"
                 placeholder="Latitude"
                 value={lat}
                 onChange={(e) => setLat(e.target.value)}
                 />
             </label>
-
+            <span className="comma" > , </span>
             <div className="errors">{errors.lng}</div>
             <label>
                 Longitude
                 <input
+                className="longitude-input"
                 type="text"
                 placeholder="Longitude"
                 value={lng}
                 onChange={(e) => setLng(e.target.value)}
                 />
             </label>
+        </div>
+    </section>
 
-            <h2>Describe your place to guests</h2>
-            <h3>Mention the best features of your space, any special amentities like fast wifi or parking, and what you love about the neighborhood.</h3>
+
+        <section className="description-container">
+            <h3>Describe your place to guests</h3>
+            <h5>Mention the best features of your space, any special amentities like fast wifi or parking, and what you love about the neighborhood.</h5>
             <div className="errors">{errors.description}</div>
-            <label>
-                Description:
-                <input
-                placeholder="Description"
+            <textarea
+                className="textarea-input"
+                placeholder="Please write at least 30 characters"
                 type="text"
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
                 />
-            </label>
+        </section>
+
 
             <h2>Create a title for your spot</h2>
             <h3>Catch guests' attention with a spot title that highlights what makes your place special.</h3>
             <div className="errors">{errors.name}</div>
-            <label>
-                Name:
                 <input
-
-type="text"
-placeholder="Name of your spot"
-value={name}
-onChange={(e) => setName(e.target.value)}
-/>
-            </label>
+                    className="name-input"
+                    type="text"
+                    placeholder="Name of your spot"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    />
 
             <h2>Set a base price for your spot</h2>
-            <h3>Competitive pricing can help your listing stand out and rank higher in search results.</h3>
+            <h5>Competitive pricing can help your listing stand out and rank higher in search results.</h5>
             <div className="errors">{errors.price}</div>
             <label>
-                Price:
+                $
                 <input
+                className="price-input"
                 type="text"
                 value={price}
                 placeholder="Price per night (USD)"
@@ -223,7 +235,7 @@ onChange={(e) => setName(e.target.value)}
             </label> */}
             <div>
 
-            <button type="submit">{formType}</button>
+            <button className="update-submit-button" type="submit">{formType}</button>
             </div>
         </form>
     </div>

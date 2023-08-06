@@ -10,7 +10,7 @@ function LoginFormModal (){
     const [password, setPassword] = useState("");
     const [errors, setErrors] = useState({});
     const { closeModal } = useModal();
-    console.log(errors)
+
     const handleSubmit = (e) => {
         e.preventDefault();
         setErrors({});
@@ -23,11 +23,19 @@ function LoginFormModal (){
         );
     };
 
+    const handledemoUser = (e) => {
+        e.preventDefault()
+        return dispatch(sessionActions.login({ credential:'DemoUser', password: 'password'}))
+        .then(closeModal)
+    }
+
+
+    const disabledLogIn = credential.length < 4 || password.length < 6
+
     return (
     <div className="log-in-form-container">
         <h2>Log In</h2>
         <form onSubmit={handleSubmit}>
-            {errors && <div className="log-in-errors">{errors.message}</div>}
             <input
                 className="user-input"
                 type="text"
@@ -44,8 +52,9 @@ function LoginFormModal (){
                 onChange={(e) => setPassword(e.target.value)}
                 required
                 />
-            <button className="log-in-button" type="submit">Log In</button>
-            <button className='demo-button'>Demo User</button>
+                {errors && <div className="log-in-errors">{errors.message}</div>}
+            <button disabled={disabledLogIn} className="log-in-button" type="submit">Log In</button>
+            <button onClick={handledemoUser} className='demo-button'>Log in as Demo User</button>
         </form>
     </div>
     );

@@ -28,7 +28,7 @@ const SpotDetails = () =>{
     const allSpotImages = spot.SpotImages.filter(image => image.preview === false)
 
     return (
-    <div>
+    <div className="spot-details">
         <div>
             <h2>{spot.name}</h2>
             <p> {spot.city}, {spot.state}, {spot.country}</p>
@@ -37,34 +37,59 @@ const SpotDetails = () =>{
             <div className='largeImg-container'>
             <img src={spot.SpotImages[0].url} alt={`${spot.name}`}></img>
             </div>
-                    {allSpotImages.map(image =><div className="smallImg-container"> <img key={image.id} src={image.url} alt={spot.name}></img></div>)}
+            <div className="smallimg-container">
+                    {allSpotImages.map(image =><div className="small-images"> <img key={image.id} src={image.url} alt={spot.name}></img></div>)}
+            </div>
         </div>
+
+<div className="spot-hosted-reserve-container">
+
         <div>
             <h2>Hosted by {spot.Owner.firstName} {spot.Owner.lastName}</h2>
-            <h3>{spot.description}</h3>
+            <p>{spot.description}</p>
         </div>
-            <div>
-                <h2>${spot.price} night</h2>
-                <p>{spot.numReviews}</p>
-                <p>{spot.avgStarRating.toFixed(1)}</p>
+
+            <div className="reserve-box-container">
+                <div className="reserve-box-price">
+                    <h2>${spot.price} night</h2>
+                </div>
+                <div className="reserve-rat-rev">
+                    <h2>
+                        <i className="fa fa-star"></i>
+                        {spot.avgStarRating ? Number(spot.avgStarRating).toFixed(1) : 'New'} · {spot.numReviews}
+                    </h2>
+                </div>
+                <div>
+                    <button className="feature-alert-button" onClick={() => alert('Feature coming soon.')}>Reserve</button>
+                </div>
             </div>
+</div>
+
+
         <section>
                     <h2>
                         <p><i className="fa fa-star"></i>{spot.avgStarRating.toFixed(1)} · {spot.numReviews}</p>
                     </h2>
-                    <div>
-                        <i className="fa fa-star"></i>
-                        {spot.avgStarRating.toFixed(1)} · {spot.numReviews}
-                    </div>
+                <div>
 
-                    <OpenModalButton modalComponent={<CreateReviewFormModal spot={spot}/>} buttonText="Post Your Review"/>
+                    <OpenModalButton
+                        className="post-review-button"
+                        modalComponent={<CreateReviewFormModal spot={spot}/>}
+                        buttonText="Post Your Review"
+                        />
+                </div>
+
             {reviews.map((review) => (
                 <div>
                     <h3>{review.User?.firstName}</h3>
                     <h4>{review.createdAt}</h4>
                     <h4>{review.review}</h4>
                 <div>
-                <OpenModalButton modalComponent={<DeleteReviewModal reviewId={review.id} spotId={spot.id}/>} buttonText="Delete"/>
+
+                <OpenModalButton
+                className="delete-review-button"
+                modalComponent={<DeleteReviewModal reviewId={review.id} spotId={spot.id}/>}
+                buttonText="Delete"/>
                 </div>
                 </div>
             ))}

@@ -6,6 +6,7 @@
     justify-content: flex-start;
     align-items: center;
     width: 100%;
+    row-gap: 35px;
 }
 
 .user-grid-item{

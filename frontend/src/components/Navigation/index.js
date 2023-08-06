@@ -6,7 +6,7 @@ import OpenModalButton from "../OpenModalButton";
 import LoginFormModal from "../LoginFormModal";
 import SignupFormModal from "../SignupFormModal";
 import "./Navigation.css";
-// import "/image/Airbnb_logo_PNG3.png"
+
 function Navigation({ isLoaded }) {
     const sessionUser = useSelector((state) => state.session.user);
 
@@ -24,7 +24,7 @@ function Navigation({ isLoaded }) {
             buttonText="Log In"
             modalComponent={<LoginFormModal />}
             />
-            
+
             <OpenModalButton
             buttonText="Sign Up"
             modalComponent={<SignupFormModal />}

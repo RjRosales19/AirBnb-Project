@@ -28,7 +28,7 @@ const AllSpots = () => {
                                         <img src={previewImage} alt={`${name}`} title={name}></img>
                                         <div className='spot-info'>
                                             <div className='location'>{city}, {state}</div>
-                                            <div className='price'>${price.toFixed(2)} night</div>
+                                            <div className='price'>${Number(price).toFixed(2)} night</div>
                                             <div className="rating">
                                                 <i className="fa fa-star"></i>
                                                 {avgRating ? avgRating.toFixed(1) : "New"}

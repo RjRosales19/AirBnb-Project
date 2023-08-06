@@ -16,6 +16,14 @@ const [confirmPassword, setConfirmPassword] = useState("");
 const [errors, setErrors] = useState({});
 const { closeModal } = useModal();
 
+const disabledSignUp =
+    username.length < 4 ||
+    password.length < 6 ||
+    confirmPassword.length < 6 ||
+    email.length < 1 ||
+    firstName.length < 1 ||
+    lastName.length < 1
+
 const handleSubmit = (e) => {
     e.preventDefault();
     if (password === confirmPassword) {
@@ -41,6 +49,7 @@ const handleSubmit = (e) => {
         confirmPassword: "Confirm Password field must be the same as the Password field"
     });
 };
+
 
 return (
     <div className="sign-up-form-container">
@@ -108,7 +117,7 @@ return (
             />
         {errors.confirmPassword && (<p>{errors.confirmPassword}</p>)}
 
-        <button className="sign-up-button"type="submit">Sign Up</button>
+        <button disabled={disabledSignUp} className="sign-up-button"type="submit">Sign Up</button>
     </form>
 </div>
 

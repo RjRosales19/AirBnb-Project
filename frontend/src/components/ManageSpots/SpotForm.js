@@ -1,4 +1,4 @@
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
 import { createSpot } from "../../store/spots";
 import { useHistory } from "react-router-dom";
@@ -6,6 +6,7 @@ import "./SpotForm.css"
 const SpotForm = ({ spot, formType }) => {
     const dispatch = useDispatch();
     const history = useHistory()
+    const currUser = useSelector(state => state.session.user)
     const [address, setAddress] = useState("");
     const [city, setCity] = useState("")
     const [state, setState ] = useState("")
@@ -22,21 +23,22 @@ const SpotForm = ({ spot, formType }) => {
     const [imageUrl5, setImageUrl5] = useState("")
     const [errors, setErrors] = useState({})
 
+    if(!currUser) history.push('/')
     const handleSubmit = async (e) => {
         e.preventDefault();
-        spot = {
-            ...spot,
-            address,
-            city,
-            state,
-            country,
-            lat,
-            lng,
-            name,
-            description,
-            price,
-
-        }
+        setErrors({})
+    spot = {
+        ...spot,
+        address,
+                city,
+                state,
+                country,
+                lat,
+                lng,
+                name,
+                description,
+                price,
+            }
         const newSpotImage = [
             {
                 url: previewImage,
@@ -60,15 +62,25 @@ const SpotForm = ({ spot, formType }) => {
             }
         ]
         if(formType === 'Create Spot'){
-            const newlyCreatedSpot = await dispatch(createSpot(spot, newSpotImage))
-            spot = newlyCreatedSpot
+            await dispatch(createSpot(spot, newSpotImage))
+            .then(async(spot)=> {
+                // spot = newlyCreatedSpot
+                if(spot && spot.id){
+                    history.push(`/spots/${spot.id}`)
+                }
+            }).catch((errors) => {
+                setErrors(errors)
+                console.log(errors)
+            })
+
         }
-        if(spot.errors){
-            setErrors(spot.errors)
-        }else{
-            history.push(`/spots/${spot.id}`)
-        }
+        // if(spot && spot.errors){
+        //     setErrors(spot.errors)
+        // }else{
+        //     history.push(`/spots/${spot.id}`)
+        // }
     };
+
     return (
         <div className="create-spot-container">
 
@@ -77,8 +89,8 @@ const SpotForm = ({ spot, formType }) => {
             <h1>Create a New Spot</h1>
 
             <section className="location-container">
-            <h2>Where's your place located?</h2>
-            <h3>Guests will only get your exact address once they booked a reservation</h3>
+            <h3>Where's your place located?</h3>
+            <h4>Guests will only get your exact address once they booked a reservation</h4>
             <div className="errors">{errors.country}</div>
             <label>
                 Country
@@ -102,8 +114,8 @@ const SpotForm = ({ spot, formType }) => {
                 onChange={(e) => setAddress(e.target.value)}
                 />
             </label>
-        <div className="city-state-container">
 
+        <div className="city-state-container">
             <div className="errors">{errors.city}</div>
             <label>
                 City
@@ -114,9 +126,8 @@ const SpotForm = ({ spot, formType }) => {
                 value={city}
                 onChange={(e) => setCity(e.target.value)}
                 />
-
             </label>
-
+            <span className="comma" > , </span>
             <div className="errors">{errors.state}</div>
             <label>
                 State
@@ -127,11 +138,10 @@ const SpotForm = ({ spot, formType }) => {
                 value={state}
                 onChange={(e) => setState(e.target.value)}
                 />
-
             </label>
         </div>
-        <div className="lat-long-container">
 
+        <div className="lat-long-container">
             <div className="errors">{errors.lat}</div>
             <label>
                 Latitude
@@ -144,7 +154,7 @@ const SpotForm = ({ spot, formType }) => {
                 />
 
             </label>
-
+            <span className="comma" > , </span>
             <div className="errors">{errors.lng}</div>
             <label>
                 Longitude
@@ -161,8 +171,8 @@ const SpotForm = ({ spot, formType }) => {
 
         <section className="description-container">
 
-            <h2>Describe your place to guests</h2>
-            <h3>Mention the best features of your space, any special amentities like fast wifi or parking, and what you love about the neighborhood.</h3>
+            <h3>Describe your place to guests</h3>
+            <h5>Mention the best features of your space, any special amentities like fast wifi or parking, and what you love about the neighborhood.</h5>
             <div className="errors">{errors.description}</div>
                 <textarea
                 className="textarea-input"
@@ -175,7 +185,7 @@ const SpotForm = ({ spot, formType }) => {
         <section>
 
             <h2>Create a title for your spot</h2>
-            <h3>Catch guests' attention with a spot title that highlights what makes your place special.</h3>
+            <h4>Catch guests' attention with a spot title that highlights what makes your place special.</h4>
             <div className="errors">{errors.name}</div>
                 <input
                     className="name-input"
@@ -188,7 +198,9 @@ const SpotForm = ({ spot, formType }) => {
         <section>
 
             <h2>Set a base price for your spot</h2>
-            <h3>Competitive pricing can help your listing stand out and rank higher in search results.</h3>
+            <h5>Competitive pricing can help your listing stand out and rank higher in search results.</h5>
+
+
             <div className="errors">{errors.price}</div>
             <label>
                 $
@@ -204,9 +216,11 @@ const SpotForm = ({ spot, formType }) => {
         <section>
 
             <h2>Liven up your spot with photos</h2>
-            <h3>Submit a link to at least one photo to publish your spot</h3>
-            <div className="errors">{errors.previewImage}</div>
+            <h4>Submit a link to at least one photo to publish your spot</h4>
+        <div className="image-input-container">
 
+        <div>
+            <div className="errors">{errors.previewImage}</div>
                 <input
                 className="preview-image-input"
                 type='url'
@@ -214,10 +228,10 @@ const SpotForm = ({ spot, formType }) => {
                 placeholder="Preview Image URL"
                 onChange={(e) => setPreviewImage(e.target.value)}
                 />
+        </div>
 
-
+        <div>
             <div className="errors">{errors.imageUrl2}</div>
-
                 <input
                 className="imageurl2-input"
                 type='url'
@@ -225,10 +239,10 @@ const SpotForm = ({ spot, formType }) => {
                 placeholder="Image URL"
                 onChange={(e) => setImageUrl2(e.target.value)}
                 />
+        </div>
 
-
+        <div>
             <div className="errors">{errors.imageUrl3}</div>
-
                 <input
                 className="imageurl3-input"
                 type='url'
@@ -236,8 +250,9 @@ const SpotForm = ({ spot, formType }) => {
                 placeholder="Image URL"
                 onChange={(e) => setImageUrl3(e.target.value)}
                 />
+        </div>
 
-
+        <div>
             <div className="errors">{errors.imageUrl4}</div>
                 <input
                 className="imageurl4-input"
@@ -246,8 +261,9 @@ const SpotForm = ({ spot, formType }) => {
                 placeholder="Image URL"
                 onChange={(e) => setImageUrl4(e.target.value)}
                 />
+        </div>
 
-
+        <div>
             <div className="errors">{errors.imageUrl5}</div>
                 <input
                 className="imageurl5-input"
@@ -256,6 +272,8 @@ const SpotForm = ({ spot, formType }) => {
                 placeholder="Image URL"
                 onChange={(e) => setImageUrl5(e.target.value)}
                 />
+        </div>
+    </div>
         </section>
             <div>
 

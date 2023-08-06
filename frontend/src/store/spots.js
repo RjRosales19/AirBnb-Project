@@ -93,7 +93,7 @@ export const createSpot = (spot, newSpotImage) => async ( dispatch, getState ) =
         return newSpot
     }else{
         const errors = await res.json()
-        console.log(errors)
+        return errors
     }
 }
 

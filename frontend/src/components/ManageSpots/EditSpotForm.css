@@ -1,6 +1,16 @@
 .edit-spot-form-container{
     display: flex;
     flex-direction: column;
-    align-items: center;
     margin: 0px 300px
+}
+
+.update-submit-button{
+    height: 35px;
+    width: 111px;
+    margin-top: 50px;
+    margin-left: 155px;
+    background-color: rgb(235, 87, 102);
+    color: white;
+    box-shadow: 2px 2px black;
+
 }

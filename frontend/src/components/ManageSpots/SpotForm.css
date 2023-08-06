@@ -7,32 +7,37 @@
 .country-input{
     width: 98%;
     border: 2px solid;
+    background-color: rgb(223, 231, 245);
 }
 
 .street-address-input{
     width: 98%;
     border: 2px solid;
+    background-color: rgb(223, 231, 245);
 }
 
 .city-input{
     width: 16rem;
     border: 2px solid;
+    background-color: rgb(223, 231, 245);
 }
 
 .state-input{
-    width: 8rem ;
-    background-color: rgba(83, 121, 170, 0.432);
+    width: 7.75rem ;
+    background-color: rgb(223, 231, 245);
     padding-right: 10px;
     border: 2px solid;
 }
 
 .latitude-input{
-    width: 12.5rem;
+    width: 12.2rem;
+    background-color: rgb(223, 231, 245);
     border: 2px solid;
 }
 
 .longitude-input{
     width: 12rem;
+    background-color: rgb(223, 231, 245);
     border: 2px solid;
 }
 
@@ -44,6 +49,69 @@
     display:flex
 }
 
-.description-container{
 
+.textarea-input{
+    background-color: rgb(223, 231, 245);
+    padding: 30px 125px;
+}
+
+.name-input{
+    background-color: rgb(223, 231, 245);
+    width: 98%
+}
+
+.price-input{
+    background-color: rgb(223, 231, 245);
+    width: 96%
+}
+
+.preview-image-input{
+    background-color: rgb(223, 231, 245);
+    width: 98%
+}
+
+.imageurl2-input{
+    background-color: rgb(223, 231, 245);
+    width: 98%
+}
+
+.imageurl3-input{
+    background-color: rgb(223, 231, 245);
+    width: 98%
+}
+
+.imageurl4-input{
+    background-color: rgb(223, 231, 245);
+    width: 98%
+}
+
+.imageurl5-input{
+    background-color: rgb(223, 231, 245);
+    width: 98%
+}
+
+.image-input-container{
+    display: grid;
+    row-gap: 15px;
+    padding-bottom: 30px;
+    border-bottom: 3px solid ;
+}
+.create-submit-button{
+    height: 35px;
+    width: 111px;
+    margin-top: 50px;
+    margin-left: 155px;
+    background-color: rgb(235, 87, 102);
+    color: white;
+    box-shadow: 2px 2px black;
+
+}
+
+.comma{
+    font-size: larger ;
+    margin-top: 20px;
+}
+
+.dot{
+    font-size: xx-large;
 }
