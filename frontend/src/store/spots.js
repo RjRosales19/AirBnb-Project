@@ -145,7 +145,7 @@ export default function spotReducer( state = initialState , action){
             delete newState.allSpots[action.spotId]
             return newState
         case UPDATE_SPOT:
-            newState = { ...state, allSpots: {...state.allSpots}}
+            newState = { ...state, allSpots: {...state.allSpots}, singleSpot: {...action.spot}}
             newState.allSpots[action.spot.id] = action.spot
             return newState
         default:
