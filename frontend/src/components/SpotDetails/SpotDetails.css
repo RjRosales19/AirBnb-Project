@@ -33,14 +33,16 @@
 }
 
 .reserve-box-container{
-    display:flex;
-    flex-direction: column;
+    display: flex;
+    flex-direction: row;
     border: 1px solid;
     width: 400px;
     height: auto;
     padding: 25px;
     border-radius: 20px;
     margin-right: 50px;
+    flex-wrap: wrap;
+    justify-content: space-between;
 }
 
 .spot-hosted-reserve-container{
@@ -79,4 +81,3 @@
     color: white;
     box-shadow: 2px 2px black;
 }
-
