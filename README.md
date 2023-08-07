@@ -3,7 +3,29 @@
 <!--!!END -->
 <!--!!ADD -->
 <!-- # `<name of application here>` -->
+[Link to live site]: https://airbeenbee-ybez.onrender.com/
 <!--!!END_ADD -->
+<!--!!START SILENT -->
+This project had implemented Express and Sequelize backend with user authentication routes. Utilized React frontend to use current backend API routes in order to signup,login, and logout.
+<!--!!END_ADD -->
+In order to Run
+1. Clone Repo to directory
+To start the server, navigate to server directory:
+2. npm install && npm start
+Navigate to client directory:
+3. npm install && npm start
+4. Navigate to the browser and open http://localhost:3000 to view in the browser
+
+<!--!!START SILENT -->
+Frameworks and Libraries used:
+* React.js
+* Express.js
+* Sequelize
+* React-Router-DOM
+* React-Redux
+<!--!!END_ADD -->
+![image](https://github.com/RjRosales19/Mod4-Project/assets/127966649/b392d711-8a53-40db-bb68-6bbe45784819)
+![image](https://github.com/RjRosales19/Mod4-Project/assets/127966649/6f289c83-b2d6-4acb-bb81-13abe6f5dd5d)
 
 ## Database Schema Design
 
