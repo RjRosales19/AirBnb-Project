@@ -124,15 +124,16 @@ const SpotDetails = () =>{
                     <h3>{review.User?.firstName}</h3>
                     <h4>{newCurrDate}</h4>
                     <h4>{review.review}</h4>
-                {(currUser?.id === review.userId) && (
 
-                <div>
+                {currUser && (currUser.id === review.userId) &&
+
+                (<div>
                 <OpenModalButton
                 className="delete-review-button"
                 modalComponent={<DeleteReviewModal reviewId={review.id} spotId={spot.id}/>}
                 buttonText="Delete"/>
-                </div>
-                )}
+                </div>)
+                }
                 </div>
             ))}
         </section>
