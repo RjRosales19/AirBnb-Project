@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useState } from "react";
+import {  useState } from "react";
 import { createSpot } from "../../store/spots";
 import { useHistory } from "react-router-dom";
 import "./SpotForm.css"
@@ -84,30 +84,6 @@ const SpotForm = ({ spot, formType }) => {
                 //     history.push(`/spots/${spot.id}`)
                 // }
             };
-    // if(spot.errors){
-    //     errorsFormObj = ({...errorsFormObj, ...spot.errors})
-    //     setErrors(errorsFormObj)
-    // }
-    // useEffect(() => {
-    //     let errorsFormObj = {}
-    //     if(address.length < 1) errorsFormObj.address = "Address is required";
-    //     if(city.length < 1) errorsFormObj.city = "City is required";
-    //     if(state.length < 1) errorsFormObj.state = "State is required";
-    //     if(country.length < 1) errorsFormObj.country = "Country is required";
-    //     if(lat.length < 1) errorsFormObj.lat = "Latitude is required";
-    //     if(lng.length < 1) errorsFormObj.lng = "Longitude is required";
-    //     if(name.length < 1) errorsFormObj.name = "Name is required";
-    //     if(description.length < 30) errorsFormObj.description = "Description needs 30 or more characters"
-    //     if(price.length < 1) errorsFormObj.price = "Price per night is required"
-    //     if(previewImage.length < 1 && !previewImage.endsWith('jpg') && !previewImage.endsWith('jpeg') && !previewImage.endsWith('gif') && !previewImage.endsWith('png')) errorsFormObj.previewImage = "Preview Image is required"
-    //     if(imageUrl2.length < 1) errorsFormObj.imageUrl2 = "Image Url is required"
-    //     if(imageUrl3.length < 1) errorsFormObj.imageUrl3 = "Image Url is required"
-    //     if(imageUrl4.length < 1) errorsFormObj.imageUrl4 = "Image Url is required"
-    //     if(imageUrl5.length < 1) errorsFormObj.imageUrl5 = "Image Url is required"
-    //     setErrors(errorsFormObj)
-    // }, [address,city,state,country,lat,lng,name,description,price,previewImage,imageUrl2,imageUrl3,imageUrl4,imageUrl5])
-
-
 
 
     return (

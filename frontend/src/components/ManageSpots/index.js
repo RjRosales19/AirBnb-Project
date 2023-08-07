@@ -1,6 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
 import { getSpots } from "../../store/spots";
-// import SpotDetails from "../SpotDetails";
 import { useEffect } from "react";
 import { NavLink ,Link, useHistory } from "react-router-dom";
 import './ManageSpots.css'
@@ -17,7 +16,7 @@ const ManageSpots = () => {
     useEffect(() => {
         dispatch(getSpots())
     }, [dispatch])
-
+    
     const handleEdit = (spotId) => {
         history.push(`/spots/${spotId}/edit`)
     }

@@ -23,13 +23,11 @@ const EditSpotForm = ({spot, formType}) => {
     // const [imageUrl5, setImageUrl5] = useState("")
     const [errors, setErrors] = useState({})
 
+    
 
-    if(!spot.id){
-        return null
-    }
     const handleSubmit = async (e) => {
         e.preventDefault()
-        let spot = {
+        spot = {
             address,
             city,
             state,
@@ -50,6 +48,10 @@ const EditSpotForm = ({spot, formType}) => {
         }else{
             history.push(`/spots/${spot.id}`)
         }
+    }
+
+    if(!spot.id){
+        return null
     }
     return(
         <div className="edit-spot-form-container">

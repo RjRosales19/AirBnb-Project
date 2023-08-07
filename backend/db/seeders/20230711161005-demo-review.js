@@ -35,7 +35,7 @@ module.exports = {
       {
         spotId: 3,
         userId: 3,
-        review: 'The view and design are impeccable',
+        review: 'The view and design are impeccable, really love it out here',
         stars: 5,
       }
     ], {validate: true});
