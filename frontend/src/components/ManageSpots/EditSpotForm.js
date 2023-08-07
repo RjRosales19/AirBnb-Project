@@ -11,8 +11,8 @@ const EditSpotForm = ({spot, formType}) => {
     const [city, setCity] = useState(spot?.city)
     const [state, setState ] = useState(spot?.state)
     const [country, setCountry ] = useState(spot?.country)
-    const [lat, setLat] = useState(40.00)
-    const [lng, setLng] = useState(110.00)
+    const [lat, setLat] = useState(spot?.lat)
+    const [lng, setLng] = useState(spot?.lng)
     const [name, setName] = useState(spot?.name)
     const [description, setDescription] = useState(spot?.description)
     const [price, setPrice] = useState(spot?.price)
@@ -29,7 +29,7 @@ const EditSpotForm = ({spot, formType}) => {
     }
     const handleSubmit = async (e) => {
         e.preventDefault()
-        spot = {
+        let spot = {
             address,
             city,
             state,
@@ -40,8 +40,9 @@ const EditSpotForm = ({spot, formType}) => {
             description,
             price
         }
+
         if(formType === 'Update Spot'){
-            const newlyUpdatedSpot = await dispatch(editSpot(spot, spotId))
+            const newlyUpdatedSpot = dispatch(editSpot(spot, spotId))
             spot = newlyUpdatedSpot
         }
         if(spot.errors){

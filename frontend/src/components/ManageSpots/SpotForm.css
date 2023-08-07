@@ -115,3 +115,7 @@
 .dot{
     font-size: xx-large;
 }
+
+.errors{
+    color: red;
+}

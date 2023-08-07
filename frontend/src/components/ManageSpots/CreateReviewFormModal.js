@@ -1,6 +1,6 @@
 import { createReview } from "../../store/reviews"
 import { useModal } from "../../context/Modal"
-import { useEffect, useState } from "react"
+import {  useState } from "react"
 import { useDispatch } from "react-redux"
 import "./CreateReviewFormModal.css"
 import { getSingleSpot } from "../../store/spots"
@@ -8,7 +8,7 @@ import { getSingleSpot } from "../../store/spots"
 
 const CreateReviewFormModal = ({spot}) => {
     const dispatch = useDispatch()
-
+    const [ errors, setErrors] = useState('')
     const [ review, setReview ] = useState("")
     const [ stars, setStars ] = useState(0)
     const { closeModal } = useModal()
@@ -26,12 +26,16 @@ const CreateReviewFormModal = ({spot}) => {
         await dispatch(createReview(newReview, spot.id))
         await dispatch(getSingleSpot(spot.id))
         .then(closeModal)
+        .catch((error) => {
+            setErrors(error)
+        })
     }
     return(
         <form>
             <div className="review-form-container">
 
             <h2>How was your stay?</h2>
+            <>{errors.message}</>
             <textarea
             className="review-form-textarea"
             placeholder="Leave your review here..."

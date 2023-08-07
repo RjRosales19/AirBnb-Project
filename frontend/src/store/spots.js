@@ -66,15 +66,15 @@ export const getSingleSpot = (spotId) => async ( dispatch, getState ) => {
 
 // thunk action creator for create spot
 export const createSpot = (spot, newSpotImage) => async ( dispatch, getState ) => {
-    const res = await csrfFetch(`/api/spots`, {
-        method: 'POST',
+
+        const res = await csrfFetch(`/api/spots`, {
+            method: 'POST',
         headers: { 'Content-Type': 'application/json'},
         body: JSON.stringify(spot),
     })
 
     if(res.ok){
         const newSpot = await res.json();
-
         const newImages = await Promise.all(newSpotImage.map(
             async images => {
                 const imageData = await csrfFetch(`/api/spots/${newSpot.id}/images`, {
@@ -87,14 +87,14 @@ export const createSpot = (spot, newSpotImage) => async ( dispatch, getState ) =
                     return newImage
                 }
             }
-        ))
-        newSpot.SpotImages = newImages
-        dispatch(readSpot(newSpot));
-        return newSpot
-    }else{
-        const errors = await res.json()
-        return errors
-    }
+            ))
+            newSpot.SpotImages = newImages
+            dispatch(readSpot(newSpot));
+            return newSpot
+        }else{
+            const errors = await res.json()
+            return errors
+        }
 }
 
 // thunk action creator for delete spot
