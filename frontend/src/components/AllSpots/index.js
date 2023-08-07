@@ -19,7 +19,6 @@ const AllSpots = () => {
     return (
         <section>
                 <ul>
-                    {/* <h1>All Spots</h1> */}
                     <div className='grid-container'>
                         {spots.map(({ id, previewImage, city, state, price, name, avgRating }) => (
                             <div className='grid-item' key = { id }>
