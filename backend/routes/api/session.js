@@ -4,11 +4,11 @@ const bcrypt = require('bcryptjs');
 
 const { setTokenCookie, restoreUser } = require('../../utils/auth.js');
 const { User } = require('../../db/models');
-const router = express.Router();
 
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation.js');
 
+const router = express.Router();
 const validateLogin = [
     check('credential')
         .exists({ checkFalsy: true })
@@ -35,9 +35,10 @@ router.post('/', validateLogin, async (req, res, next) => {
 
     if(!user || !bcrypt.compareSync(password, user.hashedPassword.toString())) {
         const err = new Error('Login failed');
+        console.log(err)
         err.status = 401;
         err.title = 'Login failed';
-        err.errors = { message: 'Invalid credentials' };
+        err.errors = { message: 'The provided credentials were invalid' };
         return next(err);
     }
 

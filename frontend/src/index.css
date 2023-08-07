@@ -1,1 +1,18 @@
 /* TODO Add site wide styles */
+button {
+    cursor:pointer;
+}
+
+form{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    /* align-items: center; */
+    align-content: center;
+}
+
+button:disabled{
+    background-color: rgb(250, 247, 247);
+    color: rgb(168, 163, 163);
+    box-shadow: 2px 2px rgb(168, 163, 163);
+}

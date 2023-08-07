@@ -19,28 +19,31 @@ function Navigation({ isLoaded }) {
         );
     } else {
         sessionLinks = (
-        <li>
+        <div>
             <OpenModalButton
             buttonText="Log In"
             modalComponent={<LoginFormModal />}
             />
+
             <OpenModalButton
             buttonText="Sign Up"
             modalComponent={<SignupFormModal />}
             />
-        </li>
+        </div>
         );
     }
 
     return (
-        <ul>
-        <li>
-            <NavLink exact to="/">
-            Home
-            </NavLink>
-        </li>
-        {isLoaded && sessionLinks}
-        </ul>
+            <nav className="nav-bar-container">
+                    <NavLink className="home" exact to="/">
+                        <img className="AirBnbLogo"
+                    src="../image/Airbnb_logo_PNG3.png" alt="AirBeeNBee"
+                        />
+                    </NavLink>
+                <div className='nav-links'>
+                    {isLoaded && sessionLinks}
+                </div>
+            </nav>
     );
 }
 

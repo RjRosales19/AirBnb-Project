@@ -1,0 +1,49 @@
+.user-grid-container{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-content: center;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    row-gap: 35px;
+}
+
+.user-grid-item{
+    display: grid;
+    width: 22%;
+    height: 13rem;
+    margin: 10px;
+    margin-top: 30px;
+}
+
+.user-grid-item img{
+    width: 100%;
+    height: 200px;
+    border-radius: 15px;
+}
+
+.spot-info-link{
+    color: black;
+    text-decoration: none;
+}
+
+.spot-info-container{
+    display: grid;
+}
+
+.manage-spots-buttons > button{
+    margin-right: 5px;
+    color: white;
+    background-color: rgb(169,169,169);
+
+}
+
+.manage-spots-buttons{
+    margin-top: 15px;
+}
+
+.createNewSpot{
+    color: white;
+    background-color: rgb(169,169,169);
+}

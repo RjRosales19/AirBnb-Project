@@ -23,32 +23,40 @@ function LoginFormModal (){
         );
     };
 
+    const handledemoUser = (e) => {
+        e.preventDefault()
+        return dispatch(sessionActions.login({ credential:'DemoUser', password: 'password'}))
+        .then(closeModal)
+    }
+
+
+    const disabledLogIn = credential.length < 4 || password.length < 6
+
     return (
-    <>
-        <h1>Log In</h1>
+    <div className="log-in-form-container">
+        <h2>Log In</h2>
         <form onSubmit={handleSubmit}>
-            <label>
-                Username or Email
             <input
+                className="user-input"
                 type="text"
                 value={credential}
+                placeholder=" Username or Email"
                 onChange={(e) => setCredential(e.target.value)}
                 required
-            />
-            </label>
-            <label>
-                Password
+                />
             <input
+                className="user-input"
                 type="password"
                 value={password}
+                placeholder=" Password"
                 onChange={(e) => setPassword(e.target.value)}
                 required
-            />
-            </label>
-            {errors.credential && <p>{errors.credential}</p>}
-            <button type="submit">Log In</button>
+                />
+                {errors && <div className="log-in-errors">{errors.message}</div>}
+            <button disabled={disabledLogIn} className="log-in-button" type="submit">Log In</button>
+            <button onClick={handledemoUser} className='demo-button'>Log in as Demo User</button>
         </form>
-    </>
+    </div>
     );
 }
 

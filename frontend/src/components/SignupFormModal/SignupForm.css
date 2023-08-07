@@ -1,0 +1,21 @@
+.sign-up-form-container{
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 20px 80px;
+}
+
+.user-info{
+    height: auto;
+    width: 265px;
+    margin: 5px;
+    border-color: black;
+    background-color: rgb(223, 231, 245);
+}
+
+.sign-up-button{
+    padding: 10px;
+    background-color: rgb(233, 71, 22);
+    color: white;
+    box-shadow: 2px 2px black;
+}

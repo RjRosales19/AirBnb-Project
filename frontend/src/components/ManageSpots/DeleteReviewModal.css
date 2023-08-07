@@ -1,0 +1,21 @@
+.delete-review-container{
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 15px;
+    row-gap: 5px;
+}
+
+.delete-review-button{
+    padding: 10px;
+    background-color: rgb(233, 71, 22);
+    color: white;
+    width: 325px;
+}
+
+.keep-review-button{
+    padding: 10px;
+    background-color: rgb(169,169,169);
+    color: white;
+    width: 325px;
+}
