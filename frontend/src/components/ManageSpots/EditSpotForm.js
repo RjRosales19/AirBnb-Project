@@ -29,7 +29,7 @@ const EditSpotForm = ({spot, formType}) => {
     }
     const handleSubmit = async (e) => {
         e.preventDefault()
-        spot = {
+        let spot = {
             address,
             city,
             state,
@@ -42,7 +42,7 @@ const EditSpotForm = ({spot, formType}) => {
         }
 
         if(formType === 'Update Spot'){
-            const newlyUpdatedSpot = await dispatch(editSpot(spot, spotId))
+            const newlyUpdatedSpot = dispatch(editSpot(spot, spotId))
             spot = newlyUpdatedSpot
         }
         if(spot.errors){
