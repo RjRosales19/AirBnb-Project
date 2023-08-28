@@ -29,7 +29,7 @@ const SpotForm = ({ spot, formType }) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setErrors({})
+        // setErrors({})
 
     spot = {
         ...spot,
@@ -75,6 +75,7 @@ const SpotForm = ({ spot, formType }) => {
             })
             .catch(async (errors) => {
                 if(errors) setErrors(errorsFormObj)
+                console.log(errors)
                 return errorsFormObj
             })
         }
@@ -102,7 +103,7 @@ const SpotForm = ({ spot, formType }) => {
                 className="country-input"
                 type="text"
                 minLength="1"
-                required
+                // required
                 value={country}
                 placeholder="Country"
                 onChange={(e) => setCountry(e.target.value)}
@@ -115,7 +116,7 @@ const SpotForm = ({ spot, formType }) => {
                 <input
                 className="street-address-input"
                 type="text"
-                required
+                // required
                 value={address}
                 placeholder="Address"
                 onChange={(e) => setAddress(e.target.value)}
@@ -129,7 +130,7 @@ const SpotForm = ({ spot, formType }) => {
                 <input
                 className="city-input"
                 type="text"
-                required
+                // required
                 placeholder="City"
                 value={city}
                 onChange={(e) => setCity(e.target.value)}
@@ -142,7 +143,7 @@ const SpotForm = ({ spot, formType }) => {
                 <input
                 className="state-input"
                 type="text"
-                required
+                // required
                 placeholder="STATE"
                 value={state}
                 onChange={(e) => setState(e.target.value)}
@@ -157,7 +158,7 @@ const SpotForm = ({ spot, formType }) => {
                 <input
                 className="latitude-input"
                 type="number"
-                required
+                // required
                 placeholder="Latitude"
                 value={lat}
                 onChange={(e) => setLat(e.target.value)}
@@ -171,7 +172,7 @@ const SpotForm = ({ spot, formType }) => {
                 <input
                 className="longitude-input"
                 type="number"
-                required
+                // required
                 placeholder="Longitude"
                 value={lng}
                 onChange={(e) => setLng(e.target.value)}
@@ -190,7 +191,7 @@ const SpotForm = ({ spot, formType }) => {
                 placeholder="Please write at least 30 characters"
                 type="text"
                 minLength={30}
-                required
+                // required
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
                 />
@@ -203,7 +204,7 @@ const SpotForm = ({ spot, formType }) => {
                 <input
                     className="name-input"
                     type="text"
-                    required
+                    // required
                     placeholder="Name of your spot"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
@@ -220,9 +221,9 @@ const SpotForm = ({ spot, formType }) => {
                 $
                 <input
                 className="price-input"
-                type="text"
+                type='number'
                 value={price}
-                required
+                // required
                 placeholder="Price per night (USD)"
                 onChange={(e) => setPrice(e.target.value)}
                 />
@@ -240,7 +241,7 @@ const SpotForm = ({ spot, formType }) => {
                 className="preview-image-input"
                 type='url'
                 value={previewImage}
-                required
+                // required
                 placeholder="Preview Image URL"
                 onChange={(e) => setPreviewImage(e.target.value)}
                 />
@@ -252,7 +253,7 @@ const SpotForm = ({ spot, formType }) => {
                 className="imageurl2-input"
                 type='url'
                 value={imageUrl2}
-                required
+                // required
                 placeholder="Image URL"
                 onChange={(e) => setImageUrl2(e.target.value)}
                 />
@@ -263,7 +264,7 @@ const SpotForm = ({ spot, formType }) => {
                 <input
                 className="imageurl3-input"
                 type='url'
-                required
+                // required
                 value={imageUrl3}
                 placeholder="Image URL"
                 onChange={(e) => setImageUrl3(e.target.value)}
@@ -276,7 +277,7 @@ const SpotForm = ({ spot, formType }) => {
                 className="imageurl4-input"
                 type='url'
                 value={imageUrl4}
-                required
+                // required
                 placeholder="Image URL"
                 onChange={(e) => setImageUrl4(e.target.value)}
                 />
@@ -287,7 +288,7 @@ const SpotForm = ({ spot, formType }) => {
                 <input
                 className="imageurl5-input"
                 type='url'
-                required
+                // required
                 value={imageUrl5}
                 placeholder="Image URL"
                 onChange={(e) => setImageUrl5(e.target.value)}

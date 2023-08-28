@@ -1,12 +1,14 @@
-import { useDispatch } from "react-redux"
-import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux"
+import React, { useEffect, useState } from "react";
 import { editSpot } from "../../store/spots";
 import { useHistory, useParams } from "react-router-dom"
 import "./EditSpotForm.css"
+
 const EditSpotForm = ({spot, formType}) => {
-    const {spotId} = useParams()
     const dispatch = useDispatch()
+    const currEditSpot = useSelector(state => state.spots.singleSpot)
     const history = useHistory()
+    const {spotId} = useParams()
     const [address, setAddress] = useState(spot?.address);
     const [city, setCity] = useState(spot?.city)
     const [state, setState ] = useState(spot?.state)
@@ -23,7 +25,17 @@ const EditSpotForm = ({spot, formType}) => {
     // const [imageUrl5, setImageUrl5] = useState("")
     const [errors, setErrors] = useState({})
 
-    
+    useEffect(() => {
+        setAddress(currEditSpot.address || '')
+        setCity(currEditSpot.city || '')
+        setState(currEditSpot.state || '')
+        setCountry(currEditSpot.country || '')
+        setLat(currEditSpot.lat || '')
+        setLng(currEditSpot.lng || '')
+        setName(currEditSpot.name || '')
+        setDescription(currEditSpot.description || '')
+        setPrice(currEditSpot.price || '')
+    }, [currEditSpot])
 
     const handleSubmit = async (e) => {
         e.preventDefault()
@@ -40,13 +52,13 @@ const EditSpotForm = ({spot, formType}) => {
         }
 
         if(formType === 'Update Spot'){
-            const newlyUpdatedSpot = dispatch(editSpot(spot, spotId))
+            const newlyUpdatedSpot = await dispatch(editSpot(spot, spotId))
             spot = newlyUpdatedSpot
         }
         if(spot.errors){
             setErrors(spot.errors)
         }else{
-            history.push(`/spots/${spot.id}`)
+            history.push(`/spots/${spotId}`)
         }
     }
 
@@ -119,7 +131,7 @@ const EditSpotForm = ({spot, formType}) => {
                 Latitude
                 <input
                 className="latitude-input"
-                type="text"
+                type="number"
                 placeholder="Latitude"
                 value={lat}
                 onChange={(e) => setLat(e.target.value)}
@@ -131,7 +143,7 @@ const EditSpotForm = ({spot, formType}) => {
                 Longitude
                 <input
                 className="longitude-input"
-                type="text"
+                type="number"
                 placeholder="Longitude"
                 value={lng}
                 onChange={(e) => setLng(e.target.value)}
@@ -173,7 +185,7 @@ const EditSpotForm = ({spot, formType}) => {
                 $
                 <input
                 className="price-input"
-                type="text"
+                type="number"
                 value={price}
                 placeholder="Price per night (USD)"
                 onChange={(e) => setPrice(e.target.value)}

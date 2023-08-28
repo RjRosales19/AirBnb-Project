@@ -53,11 +53,11 @@ const validateSpot = [
     check('description')
         .exists({ checkFalsy: true })
         .notEmpty()
-        .withMessage("Description is required"),
+        .withMessage("Description needs 30 or more characters"),
     check('price')
         .exists({ checkFalsy: true })
         .notEmpty()
-        .withMessage("Price per day is required"),
+        .withMessage("Price per night is required"),
         handleValidationErrors
     ];
 
@@ -330,6 +330,7 @@ router.get('/current', requireAuth, async (req,res) => {
         let imageUrl = image.url
         list.previewImage = imageUrl
     })
+
     list.avgRating = avg
     delete list.Reviews
     delete list.SpotImages
@@ -370,7 +371,9 @@ router.get('/:spotId', async (req,res) => {
         const sumAvg = avgStarRating.reduce((sum, starRating) =>(
             sum + starRating.stars
         ),0);
+        console.log("*******************", avgStarRating, spot.Reviews)
         const avg = sumAvg / avgStarRating.length
+
         const numReviews = await Review.count({
             where: {spotId: spot.id}
         })
