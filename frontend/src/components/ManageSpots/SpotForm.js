@@ -29,7 +29,6 @@ const SpotForm = ({ spot, formType }) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        // setErrors({})
 
     spot = {
         ...spot,
@@ -65,7 +64,6 @@ const SpotForm = ({ spot, formType }) => {
                 preview: false
             }
         ]
-        let errorsFormObj = {...errors}
         if(formType === 'Create Spot'){
             await  dispatch(createSpot(spot, newSpotImage))
             .then(async (spot) => {
@@ -74,16 +72,10 @@ const SpotForm = ({ spot, formType }) => {
                 }
             })
             .catch(async (errors) => {
-                if(errors) setErrors(errorsFormObj)
-                console.log(errors)
-                return errorsFormObj
+                const err = await errors.json()
+                if(err){ setErrors(err.errors)}
             })
         }
-        // if(spot.errors){
-            //     setErrors(spot.errors)
-            // }else{
-                //     history.push(`/spots/${spot.id}`)
-                // }
             };
 
 
@@ -187,6 +179,8 @@ const SpotForm = ({ spot, formType }) => {
             <h3>Describe your place to guests</h3>
             <h5>Mention the best features of your space, any special amentities like fast wifi or parking, and what you love about the neighborhood.</h5>
                 <textarea
+                rows="5"
+                cols="55"
                 className="textarea-input"
                 placeholder="Please write at least 30 characters"
                 type="text"

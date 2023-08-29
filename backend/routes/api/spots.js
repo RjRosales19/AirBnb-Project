@@ -48,7 +48,7 @@ const validateSpot = [
         .withMessage("Longitude is not valid"),
     check('name')
         .exists({ checkFalsy: true })
-        .isLength({max:49})
+        .notEmpty()
         .withMessage("Name must be less than 50 characters"),
     check('description')
         .exists({ checkFalsy: true })
@@ -344,6 +344,9 @@ router.get('/:spotId', async (req,res) => {
         include:
         [
             {
+                model: Review
+            },
+            {
                 model: SpotImage,
                 attributes: ['id','url','preview']
             },
@@ -360,23 +363,28 @@ router.get('/:spotId', async (req,res) => {
             message: "Spot couldn't be found"
         })
     }else{
-        const avgStarRating = await Review.findAll(req.params.reviewId)
-        let maxAvg = 5
-        let minAvg = 1
+        // const avgStarRating = await Review.findAll(req.params.reviewId)
+        // let maxAvg = 5
+        // let minAvg = 1
 
-        avgStarRating.forEach(starRating => {
-            if(starRating.stars > maxAvg) maxAvg = starRating.stars;
-            if(starRating.stars < minAvg) minAvg = starRating.stars;
-        })
-        const sumAvg = avgStarRating.reduce((sum, starRating) =>(
-            sum + starRating.stars
-        ),0);
-        console.log("*******************", avgStarRating, spot.Reviews)
-        const avg = sumAvg / avgStarRating.length
-
+        // avgStarRating.forEach(starRating => {
+        //     if(starRating.stars > maxAvg) maxAvg = starRating.stars;
+        //     if(starRating.stars < minAvg) minAvg = starRating.stars;
+        // })
+        // const sumAvg = avgStarRating.reduce((sum, starRating) =>(
+        //     sum + starRating.stars
+        // ),0);
         const numReviews = await Review.count({
             where: {spotId: spot.id}
         })
+
+        let totalStars = 0
+        spot.dataValues.Reviews.forEach((review) => {
+            const rating = review.dataValues.stars
+            totalStars += rating
+        })
+
+            const avg = totalStars / numReviews
             const currSpot = spot.toJSON()
             currSpot.numReviews = numReviews,
             currSpot.avgStarRating = avg
