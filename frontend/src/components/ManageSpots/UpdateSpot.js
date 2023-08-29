@@ -8,7 +8,7 @@ const UpdatedSpot = () => {
     const { spotId } = useParams();
     const dispatch = useDispatch();
     const spot = useSelector(state => state.spots.singleSpot)
-    
+
     useEffect(() => {
         dispatch(getSingleSpot(spotId))
     }, [dispatch, spotId])

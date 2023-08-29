@@ -1,12 +1,14 @@
-import { useDispatch } from "react-redux"
-import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux"
+import React, { useEffect, useState } from "react";
 import { editSpot } from "../../store/spots";
 import { useHistory, useParams } from "react-router-dom"
 import "./EditSpotForm.css"
+
 const EditSpotForm = ({spot, formType}) => {
-    const {spotId} = useParams()
     const dispatch = useDispatch()
+    const currEditSpot = useSelector(state => state.spots.singleSpot)
     const history = useHistory()
+    const {spotId} = useParams()
     const [address, setAddress] = useState(spot?.address);
     const [city, setCity] = useState(spot?.city)
     const [state, setState ] = useState(spot?.state)
@@ -23,7 +25,17 @@ const EditSpotForm = ({spot, formType}) => {
     // const [imageUrl5, setImageUrl5] = useState("")
     const [errors, setErrors] = useState({})
 
-    
+    useEffect(() => {
+        setAddress(currEditSpot.address || '')
+        setCity(currEditSpot.city || '')
+        setState(currEditSpot.state || '')
+        setCountry(currEditSpot.country || '')
+        setLat(currEditSpot.lat || '')
+        setLng(currEditSpot.lng || '')
+        setName(currEditSpot.name || '')
+        setDescription(currEditSpot.description || '')
+        setPrice(currEditSpot.price || '')
+    }, [currEditSpot])
 
     const handleSubmit = async (e) => {
         e.preventDefault()
@@ -40,14 +52,23 @@ const EditSpotForm = ({spot, formType}) => {
         }
 
         if(formType === 'Update Spot'){
-            const newlyUpdatedSpot = dispatch(editSpot(spot, spotId))
-            spot = newlyUpdatedSpot
+            await dispatch(editSpot(spot, spotId))
+            // spot = newlyUpdatedSpot
+            .then(async (spot) => {
+                if(spot && spot.id){
+                    history.push(`/spots/${spot.id}`)
+                }
+            })
+            .catch(async (errors) => {
+                const err = await errors.json()
+                if(err){ setErrors(err.errors)}
+            })
         }
-        if(spot.errors){
-            setErrors(spot.errors)
-        }else{
-            history.push(`/spots/${spot.id}`)
-        }
+        // if(spot.errors){
+        //     setErrors(spot.errors)
+        // }else{
+        //     history.push(`/spots/${spotId}`)
+        // }
     }
 
     if(!spot.id){
@@ -63,7 +84,6 @@ const EditSpotForm = ({spot, formType}) => {
         <section className="location-container">
             <h3>Where's your place located?</h3>
             <h4>Guests will only get your exact address once they booked a reservation</h4>
-            <div className="errors">{errors.country}</div>
             <label>
                 Country
                 <input
@@ -74,8 +94,8 @@ const EditSpotForm = ({spot, formType}) => {
                 onChange={(e) => setCountry(e.target.value)}
                 />
             </label>
+            <div className="errors">{errors.country}</div>
 
-            <div className="errors">{errors.address}</div>
             <label>
                 Street Address
                 <input
@@ -86,9 +106,9 @@ const EditSpotForm = ({spot, formType}) => {
                 onChange={(e) => setAddress(e.target.value)}
                 />
             </label>
+            <div className="errors">{errors.address}</div>
 
         <div className="city-state-container">
-            <div className="errors">{errors.city}</div>
             <label>
                 City
                 <input
@@ -98,9 +118,9 @@ const EditSpotForm = ({spot, formType}) => {
                 value={city}
                 onChange={(e) => setCity(e.target.value)}
                 />
+            <div className="errors">{errors.city}</div>
             </label>
             <span className="comma" > , </span>
-            <div className="errors">{errors.state}</div>
             <label>
                 State
                 <input
@@ -110,32 +130,33 @@ const EditSpotForm = ({spot, formType}) => {
                 value={state}
                 onChange={(e) => setState(e.target.value)}
                 />
+            <div className="errors">{errors.state}</div>
             </label>
         </div>
 
         <div className="lat-long-container">
-            <div className="errors">{errors.lat}</div>
             <label>
                 Latitude
                 <input
                 className="latitude-input"
-                type="text"
+                type="number"
                 placeholder="Latitude"
                 value={lat}
                 onChange={(e) => setLat(e.target.value)}
                 />
+            <div className="errors">{errors.lat}</div>
             </label>
             <span className="comma" > , </span>
-            <div className="errors">{errors.lng}</div>
             <label>
                 Longitude
                 <input
                 className="longitude-input"
-                type="text"
+                type="number"
                 placeholder="Longitude"
                 value={lng}
                 onChange={(e) => setLng(e.target.value)}
                 />
+            <div className="errors">{errors.lng}</div>
             </label>
         </div>
     </section>
@@ -144,20 +165,21 @@ const EditSpotForm = ({spot, formType}) => {
         <section className="description-container">
             <h3>Describe your place to guests</h3>
             <h5>Mention the best features of your space, any special amentities like fast wifi or parking, and what you love about the neighborhood.</h5>
-            <div className="errors">{errors.description}</div>
             <textarea
                 className="textarea-input"
+                rows="5"
+                cols="55"
                 placeholder="Please write at least 30 characters"
                 type="text"
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
                 />
+            <div className="errors">{errors.description}</div>
         </section>
 
 
             <h2>Create a title for your spot</h2>
             <h3>Catch guests' attention with a spot title that highlights what makes your place special.</h3>
-            <div className="errors">{errors.name}</div>
                 <input
                     className="name-input"
                     type="text"
@@ -165,19 +187,20 @@ const EditSpotForm = ({spot, formType}) => {
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     />
+            <div className="errors">{errors.name}</div>
 
             <h2>Set a base price for your spot</h2>
             <h5>Competitive pricing can help your listing stand out and rank higher in search results.</h5>
-            <div className="errors">{errors.price}</div>
             <label>
                 $
                 <input
                 className="price-input"
-                type="text"
+                type="number"
                 value={price}
                 placeholder="Price per night (USD)"
                 onChange={(e) => setPrice(e.target.value)}
                 />
+            <div className="errors">{errors.price}</div>
             </label>
 
             {/* <h2>Liven up your spot with photos</h2>

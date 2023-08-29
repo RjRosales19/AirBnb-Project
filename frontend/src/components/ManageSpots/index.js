@@ -16,10 +16,12 @@ const ManageSpots = () => {
     useEffect(() => {
         dispatch(getSpots())
     }, [dispatch])
-    
+
     const handleEdit = (spotId) => {
         history.push(`/spots/${spotId}/edit`)
     }
+
+
     return (
         <div>
             <h1>Manage Your Spots</h1>
@@ -40,7 +42,7 @@ const ManageSpots = () => {
                                     {avgRating ? avgRating.toFixed(1) : "New"}
                                     </div>
                                 </div>
-                                <div className='price'>${price} night</div>
+                                <div className='price'>${Number(price).toFixed(2)} night</div>
                             </span>
                         </div>
                     </Link>

@@ -15,6 +15,7 @@ const SpotDetails = () =>{
     const reviews = Object.values(useSelector((state) => state.reviews.singleSpot)).reverse()
     const currUser = useSelector((state) => state.session.user)
 
+    console.log(spot, reviews)
     useEffect(()=> {
         dispatch(getSingleSpot(spotId))
     },[dispatch, spotId])
