@@ -64,6 +64,7 @@ const SpotForm = ({ spot, formType }) => {
                 preview: false
             }
         ]
+
         if(formType === 'Create Spot'){
             await  dispatch(createSpot(spot, newSpotImage))
             .then(async (spot) => {
@@ -184,7 +185,7 @@ const SpotForm = ({ spot, formType }) => {
                 className="textarea-input"
                 placeholder="Please write at least 30 characters"
                 type="text"
-                minLength={30}
+                // minLength={30}
                 // required
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}

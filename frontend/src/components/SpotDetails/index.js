@@ -15,7 +15,6 @@ const SpotDetails = () =>{
     const reviews = Object.values(useSelector((state) => state.reviews.singleSpot)).reverse()
     const currUser = useSelector((state) => state.session.user)
 
-    console.log(spot, reviews)
     useEffect(()=> {
         dispatch(getSingleSpot(spotId))
     },[dispatch, spotId])
@@ -80,7 +79,7 @@ const SpotDetails = () =>{
 
             <div className="reserve-box-container">
                 <div className="reserve-box-price">
-                    <h2>${spot.price} night</h2>
+                    <h2>${spot.price.toFixed(2)} night</h2>
                 </div>
                 <div className="reserve-rat-rev">
                     <h2>
