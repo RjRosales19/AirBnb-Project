@@ -42,6 +42,11 @@ function Navigation({ isLoaded }) {
                     </NavLink>
                 <div className='nav-links'>
                     {isLoaded && sessionLinks}
+                    {/* {isLoaded && (
+                        <div>
+                            <ProfileButton user={sessionUser}/>
+                        </div>
+                    )} */}
                 </div>
             </nav>
     );

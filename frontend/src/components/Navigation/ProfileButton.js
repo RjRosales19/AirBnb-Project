@@ -13,7 +13,7 @@ function ProfileButton({ user }) {
     const ulRef = useRef();
     const [showMenu, setShowMenu] = useState(false);
     const history = useHistory();
-    
+
     const openMenu = () => {
         if (showMenu) return;
         setShowMenu(true);

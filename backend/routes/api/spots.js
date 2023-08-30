@@ -41,18 +41,20 @@ const validateSpot = [
     check('lat')
         .exists({ checkFalsy: true })
         .notEmpty()
-        .withMessage("Latitude is not valid"),
+        .withMessage("Latitude is required"),
     check('lng')
         .exists({ checkFalsy: true })
         .notEmpty()
-        .withMessage("Longitude is not valid"),
+        .withMessage("Longitude is required"),
     check('name')
         .exists({ checkFalsy: true })
         .notEmpty()
+        .isLength({max:50})
         .withMessage("Name must be less than 50 characters"),
     check('description')
         .exists({ checkFalsy: true })
         .notEmpty()
+        .isLength({min:30})
         .withMessage("Description needs 30 or more characters"),
     check('price')
         .exists({ checkFalsy: true })
