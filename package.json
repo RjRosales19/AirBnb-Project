@@ -23,5 +23,8 @@
   "bugs": {
     "url": "https://github.com/RjRosales19/Mod4-Project/issues"
   },
-  "homepage": "https://github.com/RjRosales19/Mod4-Project#readme"
+  "homepage": "https://github.com/RjRosales19/Mod4-Project#readme",
+  "dependencies": {
+    "react-datepicker": "^4.16.0"
+  }
 }

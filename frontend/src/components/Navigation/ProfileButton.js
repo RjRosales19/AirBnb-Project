@@ -63,6 +63,9 @@ const ulClassName = "profile-dropdown" + (showMenu ? "" : " hidden");
                                 Manage Spots
                             </NavLink>
                             </div>
+                            <div>
+                                <NavLink exact to="/bookings/current">Manage Bookings</NavLink>
+                            </div>
                             <button className="log-out-button"onClick={logout}>Log Out</button>
                         </div>
                     </>

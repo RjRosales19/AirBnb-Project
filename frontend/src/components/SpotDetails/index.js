@@ -7,6 +7,7 @@ import { getSpotReviews } from "../../store/reviews";
 import OpenModalButton from "../OpenModalButton";
 import CreateReviewFormModal from "../ManageSpots/CreateReviewFormModal";
 import DeleteReviewModal from "../ManageSpots/DeleteReviewModal"
+import CreateBookingModal from "../Bookings/CreateBookingModal";
 
 const SpotDetails = () =>{
     const dispatch = useDispatch();
@@ -89,6 +90,7 @@ const SpotDetails = () =>{
                 </div>
                 <div>
                     <button className="feature-alert-button" onClick={() => alert('Feature coming soon.')}>Reserve</button>
+                    <OpenModalButton  modalComponent={<CreateBookingModal spot={spot}/>}buttonText="Reserve"/>
                 </div>
             </div>
     </div>
@@ -113,7 +115,7 @@ const SpotDetails = () =>{
                 <div>
                     <OpenModalButton
                         className="post-review-button"
-                        modalComponent={<CreateReviewFormModal spot={spot}/>}
+                        modalComponent={<CreateReviewFormModal spot={spot.id}/>}
                         buttonText="Post Your Review"
                         />
                 </div>
